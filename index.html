@@ -1,0 +1,1458 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FAFAFA">
+<title>CO Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* =========================================================
+   Lyst, rent tema i Linear/Notion-stil, efter Christians mock
+   (forside/, november 2026). Alt theming sidder i :root.
+   Dark mode kommer som [data-theme="dark"] med samme navne.
+   ========================================================= */
+:root {
+  --bg: #FAFAFA;
+  --card: #FFFFFF;
+  --card-alt: #F4F4F5;
+  --card-soft: #FAFAFA;
+
+  --text: #0A0A0A;
+  --text-muted: #52525B;
+  --text-dim: #71717A;
+  --text-faint: #A1A1AA;
+
+  --line: #ECECEC;
+  --line-soft: #F4F4F5;
+
+  --accent: #4F46E5;
+  --accent-soft: #EEF2FF;
+  --accent-ink: #4338CA;
+  --accent-ring: #C7D2FE;
+  --success: #16A34A;
+  --live: #22C55E;
+  /* Ikke i mocken, men nødvendige: rød til forsinket, gul til "noget fejler". */
+  --danger: #DC2626;
+  --danger-soft: #FEF2F2;
+  --warn: #F59E0B;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-ink); }
+h1, h2, h3, h4 { margin: 0; }
+ul { list-style: none; padding: 0; margin: 0; }
+p { margin: 0; }
+button { font: inherit; cursor: pointer; }
+[hidden] { display: none !important; }
+
+.muted { color: var(--text-dim); }
+.small { font-size: 11px; }
+.muted.small { margin-top: 3px; }
+.link { font-size: 12px; background: none; border: none; padding: 0; color: var(--accent); }
+.link:hover { color: var(--accent-ink); }
+.tom { color: var(--text-dim); font-size: 13px; padding: 4px 0; }
+.fejltekst { color: var(--danger); font-size: 13px; }
+
+/* ---------- Login ---------- */
+#login {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+}
+.login-boks {
+  width: 100%; max-width: 360px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+}
+.login-boks .brand { padding: 0; margin-bottom: 24px; }
+.login-boks h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
+.login-boks .btn-primary { width: 100%; margin-top: 20px; padding: 11px 16px; }
+
+/* ---------- Formularer ---------- */
+label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin: 14px 0 6px; }
+input, select, textarea {
+  width: 100%;
+  font: inherit; font-size: 14px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 9px 11px;
+}
+textarea { min-height: 90px; resize: vertical; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.par { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fejl {
+  margin-top: 14px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+/* ---------- App shell ---------- */
+.app { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  position: sticky; top: 0;
+  height: 100vh;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 8px; margin-bottom: 32px; }
+.brand-mark {
+  width: 28px; height: 28px;
+  background: var(--text); color: #FFF;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+}
+.brand-name { font-weight: 600; font-size: 14px; }
+
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  background: none; border: none; text-align: left;
+  font-size: 14px;
+}
+.nav-item:hover { background: var(--card-soft); color: var(--text); }
+.nav-item.is-active { background: var(--card-alt); color: var(--text); font-weight: 500; }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: transparent; flex-shrink: 0; }
+.nav-item.is-active .nav-dot { background: var(--accent); }
+.nav-badge {
+  margin-left: auto;
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 1px 7px; border-radius: 10px;
+}
+
+.user {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px;
+}
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #E4E4E7;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; flex-shrink: 0;
+}
+.user-name { font-size: 13px; font-weight: 500; }
+.user-org { font-size: 11px; color: var(--text-dim); }
+.user .link { margin-left: auto; color: var(--text-dim); font-size: 11px; }
+.user .link:hover { color: var(--text); }
+
+.main { flex: 1; min-width: 0; padding: 36px 44px 56px; }
+
+/* ---------- Topbar ---------- */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 32px; }
+.topbar-date { color: var(--text-dim); font-size: 13px; }
+.topbar-greeting { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; margin-top: 4px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+.status-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  font-size: 13px; color: var(--text-muted);
+  white-space: nowrap;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-faint); }
+.status-chip.ok .status-dot { background: var(--live); }
+.status-chip.fejl .status-dot { background: var(--warn); }
+
+.btn-primary {
+  background: var(--text); color: #FFF;
+  border: none; border-radius: var(--radius-md);
+  padding: 9px 16px;
+  font-size: 13px; font-weight: 500;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: #262626; }
+.btn-primary:disabled { opacity: .6; cursor: default; }
+.btn-sekundaer {
+  background: var(--card); color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--radius-md);
+  padding: 8px 14px; font-size: 13px; font-weight: 500;
+}
+.btn-sekundaer:hover { background: var(--card-soft); }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+}
+.card--compact { padding: 20px 24px; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.card-head h2 { font-size: 15px; font-weight: 600; }
+.card-foot { margin-top: 12px; font-size: 12px; color: var(--text-faint); }
+
+/* ---------- Stats ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  position: relative;
+}
+.stat-label { color: var(--text-dim); font-size: 12px; font-weight: 500; }
+.stat-row { display: flex; align-items: baseline; gap: 8px; margin-top: 10px; min-width: 0; }
+.stat-value { font-size: 30px; font-weight: 600; letter-spacing: -0.03em; }
+.stat-value--accent { color: var(--accent); }
+.stat-meta { color: var(--text-faint); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-marker {
+  position: absolute; top: 14px; right: 14px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- Grid ---------- */
+.grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; }
+.col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+/* ---------- Segmented control ---------- */
+.segmented {
+  display: flex; gap: 2px;
+  background: var(--card-alt);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.segmented button {
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 4px 9px;
+  border-radius: 4px;
+  background: none; border: none;
+}
+.segmented button.is-active { background: var(--card); color: var(--text); font-weight: 500; }
+.segmented button[aria-disabled="true"] { cursor: not-allowed; opacity: .55; }
+
+/* ---------- Grafkort ---------- */
+.chart-card { color: var(--chart-color, var(--accent)); }
+.chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+.chart-title { display: flex; align-items: center; gap: 8px; }
+.chart-title h2 { font-size: 15px; font-weight: 600; color: var(--text); }
+.chart-dot { width: 6px; height: 6px; background: currentColor; border-radius: 50%; }
+.tag {
+  color: var(--text-dim);
+  font-size: 11px; font-weight: 500;
+  padding: 2px 7px;
+  background: var(--card-alt);
+  border-radius: 4px;
+}
+.chart-metric { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 10px; }
+.chart-value { color: var(--text); font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+.chart-delta { font-size: 12px; font-weight: 500; }
+.chart-delta--up { color: var(--success); }
+.chart-delta--down { color: var(--danger); }
+.chart-caption { color: var(--text-faint); font-size: 12px; }
+
+.chart-plot { position: relative; }
+.chart-plot svg { width: 100%; height: 140px; display: block; }
+.chart-plot--tom svg { height: 72px; }
+.grid-line { stroke: var(--line-soft); stroke-width: 1; vector-effect: non-scaling-stroke; }
+/* Ingen fill her: CSS slår SVG-attributter, og så forsvinder gradienten
+   fra fill="url(#...)". Mocken havde den fejl. */
+.chart-line {
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linejoin: round; stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.chart-end-dot {
+  position: absolute; right: -5px;
+  top: calc(var(--end-y, 0%) - 5px);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--card);
+  border: 2.5px solid currentColor;
+}
+/* Tom graf: vises når GA4 ikke er sat op, ikke svarer eller stadig henter. */
+.chart-tom {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  font-size: 13px; color: var(--text-dim);
+  padding: 0 24px;
+}
+.chart-tom code { font-size: 12px; background: var(--card-alt); padding: 1px 5px; border-radius: 4px; color: var(--text-muted); }
+.chart-hover {
+  position: absolute; top: 0; bottom: 0; width: 1px;
+  background: var(--line);
+  pointer-events: none;
+}
+.chart-tip {
+  position: absolute; top: -6px;
+  transform: translateX(-50%);
+  background: var(--text); color: #FFF;
+  font-size: 11px; white-space: nowrap;
+  padding: 3px 7px; border-radius: 4px;
+  pointer-events: none;
+}
+.chart-xaxis { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-faint); margin-top: 8px; }
+
+.chart-substats {
+  display: flex; flex-wrap: wrap; gap: 14px 32px;
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+.substat { min-width: 0; }
+.substat-label {
+  color: var(--text-dim);
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.substat-value { color: var(--text); font-size: 18px; font-weight: 600; margin-top: 2px; }
+.substat-text {
+  color: var(--text); font-size: 14px; font-weight: 500; margin-top: 4px;
+  max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Search Console-delen nederst i grafkortet. */
+.gsc { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); color: var(--text); }
+.gsc-head { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+.gsc-note { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.gsc-note b { color: var(--text); font-weight: 500; }
+.gsc-tabel { width: 100%; border-collapse: collapse; font-size: 13px; }
+.gsc-tabel td { padding: 6px 0; border-top: 1px solid var(--line-soft); }
+.gsc-tabel td.tal { text-align: right; color: var(--text-muted); width: 72px; font-variant-numeric: tabular-nums; }
+.gsc-tabel th {
+  text-align: right; font-weight: 500; font-size: 11px; color: var(--text-faint);
+  padding-bottom: 4px;
+}
+.gsc-tabel th:first-child { text-align: left; }
+
+/* ---------- Uge ---------- */
+.week { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.day { background: var(--card-soft); border-radius: 10px; padding: 14px 12px; min-width: 0; }
+.day-dow { color: var(--text-dim); font-size: 11px; font-weight: 500; text-transform: uppercase; }
+.day-num { font-size: 20px; font-weight: 600; margin-top: 2px; }
+.day-empty { color: var(--text-faint); font-size: 12px; margin-top: 14px; }
+.day-event { font-size: 11px; margin-top: 10px; }
+.day-event-time { font-weight: 600; color: var(--text); }
+.day-event--crm .day-event-time { color: var(--accent); }
+.day-event-text { color: var(--text-muted); margin-top: 2px; line-height: 1.3; overflow-wrap: anywhere; }
+.day-mere { font-size: 11px; color: var(--text-faint); margin-top: 8px; }
+.day--today { background: var(--accent-soft); border: 1px solid var(--accent-ring); }
+.day--today .day-dow { color: var(--accent); font-weight: 600; }
+.day--today .day-num { color: var(--accent-ink); }
+.day--today .day-empty { color: #6366F1; }
+
+/* ---------- Opgaver ---------- */
+.tasks { display: flex; flex-direction: column; }
+.task {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-soft);
+  color: var(--text);
+}
+a.task:hover .task-title { color: var(--accent); }
+.task-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid #D4D4D8;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background: var(--card);
+  padding: 0;
+}
+button.task-check:hover { border-color: var(--accent); background: var(--accent-soft); }
+.task-check--ikon { border-style: dashed; }
+.task-body { flex: 1; min-width: 0; }
+.task-title { font-size: 14px; }
+.task-meta { color: var(--text-faint); font-size: 12px; margin-top: 2px; }
+
+/* ---------- Pill ---------- */
+.pill {
+  font-size: 11px; font-weight: 600;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+.pill--sent { color: var(--danger); background: var(--danger-soft); }
+.pill--graa { color: var(--text-dim); background: var(--card-alt); }
+
+/* ---------- Lister ---------- */
+.list li, .list > a {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line-soft);
+  font-size: 13.5px;
+  color: var(--text);
+}
+.list > a:hover .list-titel { color: var(--accent); }
+.list-titel { min-width: 0; }
+.list-hoejre { flex-shrink: 0; display: flex; gap: 6px; align-items: baseline; }
+.afkort { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Skelet mens der hentes ---------- */
+.skel {
+  display: inline-block;
+  background: var(--card-alt);
+  border-radius: 4px;
+  color: transparent !important;
+  animation: puls 1.4s ease-in-out infinite;
+}
+.skel-linje { height: 12px; margin: 12px 0; border-radius: 4px; background: var(--card-alt); animation: puls 1.4s ease-in-out infinite; }
+.skel-linje:nth-child(2n) { width: 70%; }
+@keyframes puls { 50% { opacity: .5; } }
+@media (prefers-reduced-motion: reduce) {
+  .skel, .skel-linje { animation: none; }
+  #panel { transition: none; }
+}
+
+/* ---------- Pladsholder for faner der ikke er bygget ---------- */
+.side-head { margin-bottom: 24px; }
+.side-head h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+.side-head p { color: var(--text-dim); margin-top: 4px; }
+
+/* ---------- Slide-in panel ---------- */
+#slor {
+  position: fixed; inset: 0;
+  background: rgba(10, 10, 10, .18);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+  z-index: 20;
+}
+#slor.vis { opacity: 1; pointer-events: auto; }
+#panel {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 440px; max-width: 100%;
+  background: var(--card);
+  border-left: 1px solid var(--line);
+  transform: translateX(100%);
+  transition: transform .22s ease;
+  z-index: 21;
+  display: flex; flex-direction: column;
+}
+#panel.vis { transform: none; }
+.panel-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  padding: 24px 24px 18px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.panel-eyebrow { font-size: 11px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: .04em; }
+.panel-head h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
+.panel-under { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.panel-luk {
+  background: none; border: none; color: var(--text-dim);
+  font-size: 22px; line-height: 1; padding: 2px 6px; border-radius: var(--radius-sm);
+}
+.panel-luk:hover { background: var(--card-alt); color: var(--text); }
+.panel-krop { padding: 8px 24px 32px; overflow-y: auto; flex: 1; }
+.panel-krop label:first-child { margin-top: 10px; }
+.panel-krop .btn-primary { width: 100%; margin-top: 20px; padding: 11px 16px; }
+
+/* ---------- Responsiv ---------- */
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  /* Mocken skjuler sidebaren helt her. Så kan man ikke skifte fane, så
+     den bliver i stedet til en vandret række øverst. Fase 3 gør det pænt. */
+  .app { flex-direction: column; }
+  .sidebar { width: auto; height: auto; position: static; flex-direction: row; align-items: center; padding: 10px 16px; border-right: none; border-bottom: 1px solid var(--line); overflow-x: auto; gap: 12px; }
+  .brand { margin: 0; padding: 0; }
+  .brand-name, .user { display: none; }
+  .nav { flex-direction: row; }
+  .nav-item { white-space: nowrap; padding: 6px 10px; }
+  .nav-dot { display: none; }
+  .main { padding: 24px 16px 40px; }
+  .week { grid-template-columns: repeat(3, 1fr); }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .topbar { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .topbar-greeting { font-size: 24px; }
+  .chart-head { flex-direction: column; }
+  .par { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<section id="login" hidden>
+  <form class="login-boks" id="login-form">
+    <div class="brand"><div class="brand-mark">CO</div><div class="brand-name">CO Consulting</div></div>
+    <h1>Log ind</h1>
+    <p class="muted">Kun for Christian.</p>
+    <div id="login-fejl"></div>
+    <label for="mail">E-mail</label>
+    <input id="mail" type="email" autocomplete="username" required>
+    <label for="kode">Adgangskode</label>
+    <input id="kode" type="password" autocomplete="current-password" required>
+    <button type="submit" class="btn-primary" id="log-ind">Log ind</button>
+  </form>
+</section>
+
+<!-- ================= APP ================= -->
+<div class="app" id="app" hidden>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CO</div>
+      <div class="brand-name">CO Consulting</div>
+    </div>
+
+    <nav class="nav" aria-label="Hovedmenu">
+      <button type="button" class="nav-item" data-fane="forside"><span class="nav-dot"></span>Forside</button>
+      <button type="button" class="nav-item" data-fane="pipeline"><span class="nav-dot"></span>Pipeline</button>
+      <button type="button" class="nav-item" data-fane="kunder"><span class="nav-dot"></span>Kunder</button>
+      <button type="button" class="nav-item" data-fane="kontakter"><span class="nav-dot"></span>Kontakter</button>
+      <button type="button" class="nav-item" data-fane="foedselsdage"><span class="nav-dot"></span>Fødselsdage</button>
+      <button type="button" class="nav-item" data-fane="kalender"><span class="nav-dot"></span>Kalender</button>
+      <button type="button" class="nav-item" data-fane="opfoelgning"><span class="nav-dot"></span>Opfølgning<span class="nav-badge" id="prik" hidden></span></button>
+      <button type="button" class="nav-item" data-fane="websites"><span class="nav-dot"></span>Websites</button>
+    </nav>
+
+    <div class="user">
+      <div class="user-avatar">CO</div>
+      <div>
+        <div class="user-name">Christian</div>
+        <div class="user-org">Concept X</div>
+      </div>
+      <button type="button" class="link" id="log-ud">Log ud</button>
+    </div>
+  </aside>
+
+  <main class="main" id="indhold"></main>
+</div>
+
+<div id="slor"></div>
+<aside id="panel" aria-hidden="true"></aside>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ============================================================
+   1. OPSÆTNING
+   Publishable key må gerne stå her. Den giver ingen adgang i
+   sig selv, det er login og RLS der beskytter data.
+   ============================================================ */
+const SUPABASE_URL  = "https://fjbrfkkcsszolbgrjdbj.supabase.co";
+const SUPABASE_ANON = "sb_publishable_FO-vUOhZtGJYJd4e4Xy_hg_j2AJtvkI";
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+/* De websites der vises grafkort for. Et nyt site tilføjes her og
+   ingen andre steder: grafkoden, /api/analytics og Apps Scriptet læser
+   alle herfra.
+   ga4PropertyId: null  → kortet viser kun Search Console.
+   keyEvents            → de GA4-events der tæller som kontakter. */
+const SITES = [
+  {
+    slug: "ortwed",
+    navn: "ortwed.dk",
+    tag: "Anlæg",
+    farve: "#4F46E5",
+    ga4PropertyId: "551899083",
+    gscProperty: "sc-domain:ortwed.dk",
+    keyEvents: ["kontakt_opkald"], // tilføj "kontakt_formular" når den fyrer
+    trackedQueries: ["brolægger hundested", "anlægsgartner hundested", "brolægning nordsjælland"]
+  },
+  {
+    slug: "rosendal",
+    navn: "rosendal-tomrer.dk",
+    tag: "Tømrer",
+    farve: "#0EA5E9",
+    ga4PropertyId: null, // ligger på andet login, kortet viser kun GSC indtil dette fyldes ud
+    gscProperty: "sc-domain:rosendal-tomrer.dk",
+    keyEvents: [],
+    trackedQueries: ["tømrer hundested", "træterrasse nordsjælland", "tagrenovering nordsjælland"]
+  }
+];
+
+/* Alle kald til /api/ sender login med. Serveren afviser kald uden,
+   så fremmede ikke kan læse mails og opgaver ved at kende adressen. */
+async function apiHent(sti, valg = {}){
+  const { data } = await db.auth.getSession();
+  const token = data?.session?.access_token || "";
+  return fetch(sti, { ...valg, headers: { ...(valg.headers || {}), authorization: `Bearer ${token}` } });
+}
+
+/* ============================================================
+   2. HJÆLPERE
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const sikker = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const kort = d => d ? new Date(d).toLocaleDateString("da-DK", {day:"numeric", month:"short"}) : "";
+const klokken = d => new Date(d).toLocaleTimeString("da-DK", {hour:"2-digit", minute:"2-digit"});
+const tal = n => n == null ? "–" : Number(n).toLocaleString("da-DK");
+const decimal = n => n == null ? "–" : Number(n).toLocaleString("da-DK", {maximumFractionDigits: 1});
+
+/* Datoen som "2026-11-19" i lokal tid. toISOString() giver UTC, og så
+   hopper datoen en dag tilbage mellem midnat og klokken et eller to. */
+const lokalDato = (d = new Date()) => {
+  const x = new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+};
+
+const DAGE = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
+const MAANEDER = ["januar","februar","marts","april","maj","juni","juli",
+                  "august","september","oktober","november","december"];
+
+// Bygget i hånden, fordi browserens danske format siger "torsdag den 19. november".
+function datoLinje(d = new Date()){
+  const dag = DAGE[d.getDay()];
+  return `${dag[0].toUpperCase()}${dag.slice(1)} ${d.getDate()}. ${MAANEDER[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function hilsen(){
+  const t = new Date().getHours();
+  return t < 5 ? "God nat" : t < 10 ? "God morgen" : t < 12 ? "God formiddag"
+       : t < 18 ? "God eftermiddag" : "God aften";
+}
+
+function ugeStart(){
+  const d = new Date(); d.setHours(0,0,0,0);
+  d.setDate(d.getDate() - (d.getDay() + 6) % 7);   // mandag
+  return d;
+}
+
+// ISO-ugenummer, som det står i en dansk kalender.
+function ugeNr(d){
+  const x = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  x.setUTCDate(x.getUTCDate() + 4 - (x.getUTCDay() || 7));
+  const nytaar = new Date(Date.UTC(x.getUTCFullYear(), 0, 1));
+  return Math.ceil(((x - nytaar) / 864e5 + 1) / 7);
+}
+
+/* ============================================================
+   3. LOGIN
+   ============================================================ */
+$("#login-form").onsubmit = async e => {
+  e.preventDefault();
+  const knap = $("#log-ind");
+  knap.disabled = true;
+  knap.textContent = "Logger ind…";
+  $("#login-fejl").innerHTML = "";
+  const { error } = await db.auth.signInWithPassword({
+    email: $("#mail").value.trim(),
+    password: $("#kode").value
+  });
+  if (error){
+    $("#login-fejl").innerHTML = `<div class="fejl">${sikker(error.message)}</div>`;
+    knap.disabled = false;
+    knap.textContent = "Log ind";
+  }
+};
+$("#log-ud").onclick = () => db.auth.signOut();
+
+let startet = false;
+db.auth.onAuthStateChange((_, session) => {
+  if (session){
+    // Supabase sender også et event når tokenet fornyes. Det skal ikke
+    // tegne hele appen forfra midt i det man laver.
+    if (!startet) start();
+  } else {
+    startet = false;
+    $("#app").hidden = true;
+    $("#login").hidden = false;
+    $("#log-ind").disabled = false;
+    $("#log-ind").textContent = "Log ind";
+  }
+});
+
+function start(){
+  startet = true;
+  $("#login").hidden = true;
+  $("#app").hidden = false;
+  // Fanen står i adressen, så en genindlæsning bliver på samme fane.
+  const fane = location.hash.slice(1);
+  visFane(FANER[fane] ? fane : "forside");
+  taelOpfoelgning();
+}
+
+/* ============================================================
+   4. FANER
+   Fase 1 har kun forsiden. De andre faner står som pladsholdere,
+   så navigationen er på plads og kan bygges ud én ad gangen.
+   ============================================================ */
+const FANER = {
+  forside:      () => visForside(),
+  pipeline:     () => visPladsholder("Pipeline", "Åbne sager grupperet per trin."),
+  kunder:       () => visPladsholder("Kunder", "Kartoteket over virksomheder."),
+  kontakter:    () => visPladsholder("Kontakter", "Netværket. Personer, ikke virksomheder."),
+  foedselsdage: () => visPladsholder("Fødselsdage", "Alle fødselsdage, grupperet efter måned."),
+  kalender:     () => visPladsholder("Kalender", "CRM-møder og Google-kalenderen flettet."),
+  opfoelgning:  () => visPladsholder("Opfølgning", "Opgaver og tilbud der er gået i stå."),
+  websites:     () => visPladsholder("Websites", "ortwed.dk og rosendal-tomrer.dk over 30 dage, 90 dage og et år.")
+};
+
+document.querySelectorAll(".nav-item").forEach(b => {
+  b.onclick = () => visFane(b.dataset.fane);
+});
+
+function visFane(navn){
+  document.querySelectorAll(".nav-item").forEach(b =>
+    b.classList.toggle("is-active", b.dataset.fane === navn));
+  history.replaceState(null, "", "#" + navn);
+  lukPanel();
+  window.scrollTo(0, 0);
+  FANER[navn]();
+}
+
+function visPladsholder(titel, tekst){
+  $("#indhold").innerHTML = `
+    <header class="side-head"><h1>${sikker(titel)}</h1><p>${sikker(tekst)}</p></header>
+    <section class="card"><p class="tom">Fanen er ikke bygget endnu. Den kommer i fase 2.</p></section>`;
+}
+
+/* ============================================================
+   5. PANEL
+   Glider ind fra højre. Bruges til alt der oprettes eller rettes.
+   ============================================================ */
+function aabnPanel(eyebrow, titel, under, krop){
+  $("#panel").innerHTML = `
+    <div class="panel-head">
+      <div>
+        <div class="panel-eyebrow">${eyebrow}</div>
+        <h3>${titel}</h3>
+        ${under ? `<div class="panel-under">${under}</div>` : ""}
+      </div>
+      <button type="button" class="panel-luk" onclick="lukPanel()" aria-label="Luk">&times;</button>
+    </div>
+    <div class="panel-krop">${krop}</div>`;
+  $("#panel").classList.add("vis");
+  $("#panel").setAttribute("aria-hidden", "false");
+  $("#slor").classList.add("vis");
+}
+function lukPanel(){
+  $("#panel").classList.remove("vis");
+  $("#panel").setAttribute("aria-hidden", "true");
+  $("#slor").classList.remove("vis");
+}
+$("#slor").onclick = lukPanel;
+document.addEventListener("keydown", e => { if (e.key === "Escape") lukPanel(); });
+
+/* ---------- opgaver ----------
+   En opgave behøver ikke en sag. Kunden er valgfri. */
+let kundeListe = [];
+async function hentKunder(){
+  const { data } = await db.from("kunder").select("id,navn").order("navn");
+  kundeListe = data || [];
+  return kundeListe;
+}
+
+async function nyOpgave(){
+  await hentKunder();
+  aabnPanel("Opret", "Ny opgave", "", `
+    <label for="no-titel">Hvad skal gøres?</label>
+    <input id="no-titel" placeholder="Ring og følg op">
+    <div class="par">
+      <div><label for="no-dato">Forfalder</label>
+        <input id="no-dato" type="date" value="${lokalDato()}"></div>
+      <div><label for="no-kunde">Kunde</label>
+        <select id="no-kunde"><option value="">Ingen</option>
+          ${kundeListe.map(k => `<option value="${sikker(k.id)}">${sikker(k.navn)}</option>`).join("")}</select></div>
+    </div>
+    <div id="no-fejl"></div>
+    <button type="button" class="btn-primary" onclick="gemNyOpgave()">Gem opgave</button>`);
+  $("#no-titel").focus();
+  $("#no-titel").onkeydown = e => { if (e.key === "Enter") gemNyOpgave(); };
+}
+
+async function gemNyOpgave(){
+  const titel = $("#no-titel").value.trim();
+  const d = $("#no-dato").value;
+  if (!titel || !d) return ($("#no-fejl").innerHTML = `<div class="fejl">Opgaven skal have en titel og en dato.</div>`);
+  const { data: bruger } = await db.auth.getUser();
+  const { error } = await db.from("opgaver").insert({
+    titel,
+    forfalder_dato: d,
+    kunde_id: $("#no-kunde").value || null,
+    ansvarlig_id: bruger?.user?.id || null
+  });
+  if (error) return ($("#no-fejl").innerHTML = `<div class="fejl">${sikker(error.message)}</div>`);
+  lukPanel();
+  taelOpfoelgning();
+  if (location.hash === "#forside") visForside();
+}
+
+async function lukOpgave(id){
+  const { error } = await db.from("opgaver")
+    .update({afsluttet: true, afsluttet_dato: new Date().toISOString()})
+    .eq("id", id);
+  if (error) return alert("Kunne ikke lukke opgaven: " + error.message);
+  taelOpfoelgning();
+  // Kun kortet tegnes om, ikke hele forsiden, så graferne ikke blinker.
+  crmOpgaver = crmOpgaver.filter(t => t.id !== id);
+  forsideTal.opgaverCrm = crmOpgaver.length;
+  tegnHandling();
+  tegnStats();
+}
+
+// Prikken ved Opfølgning: åbne CRM-opgaver der forfalder i dag eller før.
+async function taelOpfoelgning(){
+  const { count } = await db.from("opgaver")
+    .select("id", {count: "exact", head: true})
+    .eq("afsluttet", false)
+    .lte("forfalder_dato", lokalDato());
+  const p = $("#prik");
+  p.hidden = !count;
+  p.textContent = count || "";
+}
+
+/* ============================================================
+   6. FORSIDE
+   Tegnes i to trin: først skelettet med det samme, så fylder hver
+   kilde sit eget kort ud når den svarer. Ingen kilde venter på en
+   anden, og en kilde der fejler, tager ikke resten med sig.
+   ============================================================ */
+
+// Tallene i stats-rækken. null betyder "ikke hentet endnu".
+let forsideTal = {};
+let crmOpgaver = [], crmGaaet = [], todoistOpgaver = [], todoistFejl = "";
+let ugeMoeder = [], gKalender = [];
+let postCache = null, nyhedsCache = null, nyhedsSpor = "marked";
+let analytik = { ga4: null, gsc: null, ga4Fejl: "", gscFejl: "", hentet: false };
+
+// Status-chippen i topbaren samler hvordan hver kilde har det.
+let kilder = {};
+function kildeStatus(navn, status){
+  kilder[navn] = status;          // "henter", "ok" eller en fejltekst
+  const chip = $("#status-chip");
+  if (!chip) return;
+  const v = Object.values(kilder);
+  const fejl = Object.entries(kilder).filter(([, s]) => s !== "henter" && s !== "ok");
+  chip.className = "status-chip" + (v.includes("henter") ? "" : fejl.length ? " fejl" : " ok");
+  chip.title = fejl.map(([k, s]) => `${k}: ${s}`).join("\n");
+  $("#status-tekst").textContent = v.includes("henter") ? "Henter data"
+    : fejl.length ? `${fejl.length} ${fejl.length === 1 ? "kilde fejler" : "kilder fejler"}`
+    : "Alt hentet";
+}
+
+function visForside(){
+  forsideTal = { moederCrm: null, moederGoogle: null, naeste: null,
+                 opgaverCrm: null, todoist: null, kontakter: null, ulaeste: null };
+  kilder = {};
+  todoistFejl = "";
+
+  $("#indhold").innerHTML = `
+    <header class="topbar">
+      <div>
+        <div class="topbar-date">${datoLinje()}</div>
+        <h1 class="topbar-greeting">${hilsen()}, Christian</h1>
+      </div>
+      <div class="topbar-actions">
+        <div class="status-chip" id="status-chip"><span class="status-dot"></span><span id="status-tekst">Henter data</span></div>
+        <button type="button" class="btn-primary" onclick="nyOpgave()">+ Ny opgave</button>
+      </div>
+    </header>
+
+    <section class="stats" id="stats"></section>
+
+    <div class="grid">
+      <div class="col col--main">
+        ${SITES.map(s => `<section class="card chart-card" id="site-${s.slug}" style="--chart-color: ${s.farve};"></section>`).join("")}
+
+        <section class="card">
+          <header class="card-head">
+            <h2>Uge ${ugeNr(new Date())}</h2>
+            <button type="button" class="link" onclick="visFane('kalender')">Åbn kalender →</button>
+          </header>
+          <div class="week" id="uge"></div>
+        </section>
+
+        <section class="card" id="handling"></section>
+      </div>
+
+      <div class="col col--side">
+        <section class="card card--compact">
+          <header class="card-head">
+            <h2>Fødselsdage</h2>
+            <button type="button" class="link" onclick="visFane('foedselsdage')">30 dage →</button>
+          </header>
+          <div id="fdage">${skelet(2)}</div>
+        </section>
+
+        <section class="card">
+          <header class="card-head">
+            <h2>Ulæst post</h2>
+            <span class="pill" id="post-antal" hidden></span>
+          </header>
+          <div id="post">${skelet(4)}</div>
+        </section>
+
+        <section class="card">
+          <header class="card-head">
+            <h2>Nyheder</h2>
+            <div class="segmented" id="nyheds-spor">
+              ${Object.entries(SPOR).map(([k, n]) =>
+                `<button type="button" data-spor="${k}" class="${k === nyhedsSpor ? "is-active" : ""}" onclick="visNyheder('${k}')">${n}</button>`).join("")}
+            </div>
+          </header>
+          <div id="nyheder">${skelet(4)}</div>
+        </section>
+      </div>
+    </div>`;
+
+  tegnStats();
+  SITES.forEach(tegnSite);
+  tegnUge();
+  tegnHandling();
+
+  hentCrm();
+  hentTodoist();
+  hentIndbakke();
+  hentNyheder();
+  hentAnalytik();
+}
+
+const skelet = n => Array.from({length: n}, () => `<div class="skel-linje"></div>`).join("");
+
+/* ---------- stats-rækken ---------- */
+function tegnStats(){
+  const boks = $("#stats");
+  if (!boks) return;
+  const t = forsideTal;
+  const sum = (...x) => x.some(v => v == null) ? null : x.reduce((a, b) => a + b, 0);
+  const moeder = sum(t.moederCrm, t.moederGoogle ?? 0);   // Google kommer senere eller aldrig
+  const forfaldne = sum(t.opgaverCrm, t.todoist ?? 0);
+
+  const stat = (label, vaerdi, meta, fremhaev = false) => `
+    <article class="stat">
+      <div class="stat-label">${label}</div>
+      <div class="stat-row">
+        <div class="stat-value${fremhaev ? " stat-value--accent" : ""}${vaerdi == null ? " skel" : ""}">${vaerdi == null ? "00" : tal(vaerdi)}</div>
+        <div class="stat-meta">${meta}</div>
+      </div>
+      ${fremhaev ? `<span class="stat-marker" aria-hidden="true"></span>` : ""}
+    </article>`;
+
+  boks.innerHTML =
+    stat("Møder i ugen", moeder,
+      t.naeste ? `næste ${sikker(t.naeste)}` : moeder ? "resten er overstået" : "tom uge") +
+    stat("Forfaldne opgaver", forfaldne, forfaldne ? "kræver handling" : "alt er ajour", forfaldne > 0) +
+    stat("Kontakter", t.kontakter, "i netværket") +
+    stat("Ulæst post", t.ulaeste, t.ulaeste === 1 ? "mail" : "mails");
+}
+
+/* ---------- CRM-data fra Supabase ----------
+   Alt fra databasen hentes samlet, fordi det er hurtigt og samme sted. */
+async function hentCrm(){
+  kildeStatus("Supabase", "henter");
+  const start = ugeStart();
+  const slut = new Date(start); slut.setDate(slut.getDate() + 7);
+  const idag = lokalDato();
+
+  const [uge, opg, gaaet, folk, fdag] = await Promise.all([
+    db.from("moeder").select("*, personer(navn), kunder(navn)")
+      .gte("start_tid", start.toISOString()).lt("start_tid", slut.toISOString())
+      .order("start_tid"),
+    db.from("opgaver").select("*, kunder(navn), leads(titel)")
+      .eq("afsluttet", false).lte("forfalder_dato", idag).order("forfalder_dato"),
+    db.from("v_skal_foelges_op").select("*"),
+    db.from("personer").select("id", {count: "exact", head: true}).eq("privat", false),
+    db.from("v_foedselsdage").select("*").lte("dage_til", 30).order("dage_til").limit(6)
+  ]);
+
+  const fejl = [uge, opg, gaaet, folk, fdag].find(r => r.error);
+  kildeStatus("Supabase", fejl ? fejl.error.message : "ok");
+
+  ugeMoeder = uge.data || [];
+  crmOpgaver = opg.data || [];
+  crmGaaet = gaaet.data || [];
+
+  forsideTal.moederCrm = ugeMoeder.length;
+  forsideTal.opgaverCrm = crmOpgaver.length;
+  forsideTal.kontakter = folk.error ? null : (folk.count || 0);
+  opdaterNaeste();
+
+  tegnStats();
+  tegnUge();
+  tegnHandling();
+  tegnFoedselsdage(fdag.data || [], fdag.error);
+}
+
+// Næste møde i ugen, uanset om det står i CRM eller Google.
+function opdaterNaeste(){
+  const nu = new Date();
+  const alle = [
+    ...ugeMoeder.map(m => new Date(m.start_tid)),
+    ...gKalender.filter(a => !a.heldags).map(a => new Date(a.start))
+  ].filter(d => d > nu).sort((a, b) => a - b);
+  forsideTal.naeste = alle.length
+    ? `${DAGE[alle[0].getDay()].slice(0, 3)} ${klokken(alle[0])}` : null;
+}
+
+/* ---------- Uge ----------
+   Tegnes to gange: først med CRM-møderne, igen når Google-kalenderen
+   er hentet gennem /api/indbakke. */
+function tegnUge(){
+  const boks = $("#uge");
+  if (!boks) return;
+  const idag = lokalDato();
+  const start = ugeStart();
+  let h = "";
+
+  for (let i = 0; i < 5; i++){
+    const d = new Date(start); d.setDate(d.getDate() + i);
+    const key = lokalDato(d);
+    const poster = [
+      ...ugeMoeder.filter(m => lokalDato(m.start_tid) === key).map(m => ({
+        tid: m.start_tid,
+        tekst: m.personer?.navn ? `${m.titel} · ${m.personer.navn}` : m.titel,
+        slags: "crm"
+      })),
+      ...gKalender.filter(a => lokalDato(a.start) === key).map(a => ({
+        tid: a.start,
+        tekst: a.titel + (a.sted ? " · " + a.sted : ""),
+        heldags: a.heldags,
+        slags: "google"
+      }))
+    ].sort((a, b) => (b.heldags ? 1 : 0) - (a.heldags ? 1 : 0) || String(a.tid).localeCompare(String(b.tid)));
+
+    const vis = poster.slice(0, 3);
+    h += `<div class="day${key === idag ? " day--today" : ""}">
+      <div class="day-dow">${key === idag ? "I dag" : DAGE[d.getDay()].slice(0, 3)}</div>
+      <div class="day-num">${d.getDate()}</div>
+      ${vis.map(x => `<div class="day-event day-event--${x.slags}">
+        <div class="day-event-time">${x.heldags ? "Hele dagen" : klokken(x.tid)}</div>
+        <div class="day-event-text">${sikker(x.tekst)}</div>
+      </div>`).join("")}
+      ${poster.length > vis.length ? `<div class="day-mere">+${poster.length - vis.length} mere</div>` : ""}
+      ${poster.length ? "" : `<div class="day-empty">fri</div>`}
+    </div>`;
+  }
+  boks.innerHTML = h;
+}
+
+/* ---------- Kræver handling ----------
+   CRM-opgaver, tilbud i stå og Todoist. CRM og Todoist får hver deres
+   pladser, så den ene aldrig skubber den anden ud. */
+const HANDLING_PLADSER = 6;
+
+function tegnHandling(){
+  const boks = $("#handling");
+  if (!boks) return;
+  const idag = lokalDato();
+
+  const crm = [
+    ...crmOpgaver.map(t => ({ titel: t.titel, meta: ["CRM", t.kunder?.navn || t.leads?.titel].filter(Boolean).join(" · "),
+      dato: t.forfalder_dato, sent: t.forfalder_dato < idag, id: t.id, slags: "opgave" })),
+    ...crmGaaet.map(g => ({ titel: g.titel, meta: ["Tilbud i stå", g.kunde].filter(Boolean).join(" · "),
+      dato: g.senest_tilbud_sendt, id: g.id, slags: "tilbud" }))
+  ];
+  const todo = todoistOpgaver.map(o => ({ titel: o.titel, meta: "Todoist", dato: o.dato,
+    sent: o.forfalden, link: o.link, slags: "todoist" }));
+
+  const crmPladser = Math.max(3, HANDLING_PLADSER - todo.length);
+  const vis = [...crm.slice(0, crmPladser),
+               ...todo.slice(0, HANDLING_PLADSER - Math.min(crm.length, crmPladser))];
+  const ialt = crm.length + todo.length;
+  const henter = forsideTal.opgaverCrm == null;
+
+  const raekke = x => {
+    const pill = x.dato ? `<span class="pill${x.sent ? " pill--sent" : ""}">${kort(x.dato)}</span>` : "";
+    const krop = `<div class="task-body">
+        <div class="task-title">${sikker(x.titel)}</div>
+        <div class="task-meta">${sikker(x.meta)}</div>
+      </div>${pill}`;
+    if (x.slags === "opgave") return `<li class="task">
+      <button type="button" class="task-check" title="Markér som færdig" aria-label="Markér som færdig" onclick="lukOpgave('${sikker(x.id)}')"></button>${krop}</li>`;
+    if (x.slags === "todoist") return `<li><a class="task" href="${sikker(x.link)}" target="_blank" rel="noopener">
+      <span class="task-check task-check--ikon" aria-hidden="true"></span>${krop}</a></li>`;
+    // Tilbud åbnes fra Opfølgning, indtil sagspanelet er bygget i fase 2.
+    return `<li><a class="task" href="#opfoelgning" onclick="visFane('opfoelgning');return false">
+      <span class="task-check task-check--ikon" aria-hidden="true"></span>${krop}</a></li>`;
+  };
+
+  boks.innerHTML = `
+    <header class="card-head">
+      <h2>Kræver handling</h2>
+      <button type="button" class="link" onclick="visFane('opfoelgning')">${ialt > vis.length ? `Se alle ${ialt} →` : "Se alle →"}</button>
+    </header>
+    ${henter ? skelet(3)
+      : vis.length ? `<ul class="tasks">${vis.map(raekke).join("")}</ul>`
+      : `<p class="tom">Intet forfaldent. Sjældent syn.</p>`}
+    ${todoistFejl ? `<div class="card-foot fejltekst">Todoist: ${sikker(todoistFejl)}</div>` : ""}`;
+}
+
+async function hentTodoist(){
+  kildeStatus("Todoist", "henter");
+  try {
+    const r = await apiHent("/api/todoist");
+    const data = await r.json();
+    todoistOpgaver = data.opgaver || [];
+    todoistFejl = data.fejl || "";
+  } catch {
+    todoistOpgaver = [];
+    todoistFejl = "ingen forbindelse";
+  }
+  // Vises både i chippen og i kortets fod, så en død forbindelse ikke er tavs.
+  kildeStatus("Todoist", todoistFejl || "ok");
+  forsideTal.todoist = todoistOpgaver.length;
+  tegnStats();
+  tegnHandling();
+}
+
+/* ---------- Fødselsdage ---------- */
+function tegnFoedselsdage(liste, fejl){
+  const boks = $("#fdage");
+  if (!boks) return;
+  if (fejl) return (boks.innerHTML = `<p class="fejltekst">Kunne ikke hente fødselsdage.</p>`);
+  if (!liste.length) return (boks.innerHTML = `<p class="muted">Ingen fødselsdage de næste 30 dage.</p>`);
+  boks.innerHTML = `<ul class="list">${liste.slice(0, 5).map(f => `<li>
+    <div class="list-titel">
+      <div>${sikker(f.navn)}${f.fylder ? `, fylder ${sikker(f.fylder)}` : ""}</div>
+      <div class="muted small">${[f.relation, f.virksomhed, f.privat ? "privat" : ""].filter(Boolean).map(sikker).join(" · ")}</div>
+    </div>
+    <div class="list-hoejre">${f.dage_til === 0 ? `<span class="pill">I dag</span>`
+      : `<span class="muted">${f.dage_til === 1 ? "i morgen" : kort(f.naeste)}</span>`}</div>
+  </li>`).join("")}</ul>`;
+}
+
+/* ---------- Ulæst post (gennem /api/indbakke) ----------
+   Samme kald giver også Google-kalenderen til ugekortet. */
+async function hentIndbakke(){
+  kildeStatus("Gmail", "henter");
+  try {
+    // Kendte afsendere: både privat og arbejdsmail på alle i kartoteket,
+    // så mails fra kunder får virksomhedens navn på.
+    const [{ data: p }, { data: a }, r] = await Promise.all([
+      db.from("personer").select("navn,email"),
+      db.from("ansaettelser").select("email_arbejde, personer(navn), kunder(navn)"),
+      apiHent("/api/indbakke")
+    ]);
+    const kendte = new Map();
+    (p || []).forEach(x => x.email && kendte.set(x.email.toLowerCase(), {navn: x.navn, hvor: ""}));
+    (a || []).forEach(x => x.email_arbejde && kendte.set(x.email_arbejde.toLowerCase(),
+      {navn: x.personer?.navn || "", hvor: x.kunder?.navn || ""}));
+
+    const data = await r.json();
+    gKalender = data.aftaler || [];
+    postCache = (data.poster || []).map(m => {
+      const k = kendte.get((m.email || "").toLowerCase());
+      return k ? {...m, hvor: k.hvor, navn: k.navn || m.navn} : m;
+    });
+
+    if (data.fejl && !postCache.length){
+      kildeStatus("Gmail", data.fejl);
+      $("#post") && ($("#post").innerHTML = `<p class="fejltekst">${sikker(
+        data.fejl === "mangler opsætning"
+          ? "Ikke koblet til. GMAIL_URL og GMAIL_NOEGLE mangler i Cloudflare."
+          : "Kunne ikke hente post: " + data.fejl)}</p>`);
+    } else {
+      kildeStatus("Gmail", "ok");
+      forsideTal.ulaeste = data.ulaeste ?? postCache.length;
+      visPost();
+    }
+
+    forsideTal.moederGoogle = gKalender.filter(x => !x.heldags).length;
+    opdaterNaeste();
+    tegnStats();
+    tegnUge();
+  } catch {
+    kildeStatus("Gmail", "ingen forbindelse");
+    $("#post") && ($("#post").innerHTML = `<p class="fejltekst">Kunne ikke hente post lige nu.</p>`);
+  }
+}
+
+function visPost(){
+  const boks = $("#post");
+  if (!boks) return;
+  const poster = postCache || [];
+  const antal = $("#post-antal");
+  antal.hidden = !forsideTal.ulaeste;
+  antal.textContent = forsideTal.ulaeste || "";
+
+  if (!poster.length) return (boks.innerHTML = `<p class="muted">Indbakken er tom. Nyd det.</p>`);
+  boks.innerHTML = `<div class="list">${poster.slice(0, 6).map(m => `
+    <a href="${sikker(m.link)}" target="_blank" rel="noopener" title="${sikker(m.uddrag || "")}">
+      <div class="list-titel">
+        <div class="afkort">${sikker(m.navn || m.email)}</div>
+        <div class="muted small afkort">${sikker(m.emne || "(intet emne)")}</div>
+      </div>
+      <div class="list-hoejre">
+        ${m.hvor ? `<span class="pill pill--graa">${sikker(m.hvor)}</span>` : ""}
+        <span class="muted">${kort(m.dato)}</span>
+      </div>
+    </a>`).join("")}</div>`;
+}
+
+/* ---------- Nyheder (gennem /api/nyheder) ---------- */
+const SPOR = { marked: "Branchen", ai: "AI", fodbold: "Fodbold" };
+
+async function hentNyheder(){
+  kildeStatus("Nyheder", "henter");
+  try {
+    // "Dine kunder" er sat på pause. Serveren kan stadig søge på
+    // kundenavne, hvis den får dem med i POST-kroppen igen.
+    const r = await apiHent("/api/nyheder", { method: "POST" });
+    if (!r.ok) throw new Error(r.status);
+    nyhedsCache = await r.json();
+    kildeStatus("Nyheder", "ok");
+    visNyheder(nyhedsSpor);
+  } catch {
+    kildeStatus("Nyheder", "ingen forbindelse");
+    $("#nyheder") && ($("#nyheder").innerHTML = `<p class="fejltekst">Kunne ikke hente nyheder lige nu.</p>`);
+  }
+}
+
+function visNyheder(spor){
+  nyhedsSpor = spor;
+  document.querySelectorAll("#nyheds-spor button").forEach(b =>
+    b.classList.toggle("is-active", b.dataset.spor === spor));
+  const boks = $("#nyheder");
+  if (!boks || !nyhedsCache) return;
+  const poster = nyhedsCache[spor] || [];
+  if (!poster.length) return (boks.innerHTML = `<p class="muted">Intet nyt at vise.</p>`);
+  boks.innerHTML = `<div class="list">${poster.slice(0, 6).map(a => `
+    <a href="${sikker(a.link)}" target="_blank" rel="noopener">
+      <div class="list-titel">
+        <div>${sikker(a.titel)}</div>
+        <div class="muted small">${[a.hold, a.kilde, a.dato ? kort(a.dato) : ""].filter(Boolean).map(sikker).join(" · ")}</div>
+      </div>
+    </a>`).join("")}</div>`;
+}
+
+/* ============================================================
+   7. WEBSITES (gennem /api/analytics)
+   Ét kald til GA4 og ét til Search Console for alle sites i SITES.
+   Hvert kort tegnes ud fra hvad der er kommet, så et site uden GA4
+   stadig viser sine søgeord.
+   ============================================================ */
+async function hentAnalytik(){
+  analytik = { ga4: null, gsc: null, ga4Fejl: "", gscFejl: "", hentet: false };
+  const ider = SITES.map(s => s.ga4PropertyId).filter(Boolean);
+  const soeg = Object.fromEntries(SITES.filter(s => s.gscProperty)
+    .map(s => [s.gscProperty, s.trackedQueries || []]));
+
+  kildeStatus("Analytics", "henter");
+  const hent = async (sti) => {
+    try {
+      const r = await apiHent(sti);
+      const data = await r.json();
+      // Uden "sites" i svaret er det den gamle script-version, der kun
+      // kender indbakken og svarer med den uanset hvad man spørger om.
+      if (!data.sites) return { fejl: data.fejl || "Apps Script kender ikke v=ga4/gsc endnu. Er den nye version deployet?" };
+      return data;
+    } catch {
+      return { fejl: "ingen forbindelse" };
+    }
+  };
+
+  const [ga4, gsc] = await Promise.all([
+    ider.length ? hent(`/api/analytics?v=ga4&ider=${encodeURIComponent(ider.join(","))}`) : { sites: {} },
+    hent(`/api/analytics?v=gsc&soeg=${encodeURIComponent(JSON.stringify(soeg))}`)
+  ]);
+
+  analytik = {
+    ga4: ga4.sites || null, gsc: gsc.sites || null,
+    ga4Fejl: ga4.fejl || "", gscFejl: gsc.fejl || "", hentet: true
+  };
+  // Fejl på et enkelt site tæller også, så chippen ikke siger "Alt hentet"
+  // mens et kort står med en fejl.
+  const siteFejl = [...Object.values(analytik.ga4 || {}), ...Object.values(analytik.gsc || {})]
+    .find(x => x && x.fejl);
+  kildeStatus("Analytics", analytik.ga4Fejl || analytik.gscFejl || siteFejl?.fejl || "ok");
+  SITES.forEach(tegnSite);
+}
+
+// Summen af de events config siger er kontakter.
+function kontakterFra(events, keyEvents){
+  if (!keyEvents?.length) return null;
+  return keyEvents.reduce((s, k) => s + Number(events?.[k] || 0), 0);
+}
+
+// Daglige tal til et SVG-sti i viewBox 600×140. Bunden er y=130 og
+// toppen y=10, så linjen aldrig rører kanten.
+function grafSti(vaerdier){
+  const maks = Math.max(1, ...vaerdier);
+  const n = vaerdier.length;
+  const pkt = vaerdier.map((v, i) => [n === 1 ? 600 : i / (n - 1) * 600, 130 - v / maks * 120]);
+  const linje = pkt.map((p, i) => `${i ? "L" : "M"} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(" ");
+  return { linje, flade: `${linje} L 600 130 L 0 130 Z`, slutY: pkt[n - 1][1] };
+}
+
+function tegnSite(site){
+  const boks = $("#site-" + site.slug);
+  if (!boks) return;
+
+  const ga4 = site.ga4PropertyId ? analytik.ga4?.[site.ga4PropertyId] : null;
+  const gsc = site.gscProperty ? analytik.gsc?.[site.gscProperty] : null;
+  const henter = !analytik.hentet;
+  const harGa4 = !!(ga4 && !ga4.fejl && ga4.dage);
+
+  // Hvad der står i grafen, når der ikke er en graf.
+  const ga4Besked = !site.ga4PropertyId
+    ? `GA4 ikke konfigureret. Sæt <code>ga4PropertyId</code> i SITES.`
+    : henter ? ""
+    : analytik.ga4Fejl ? `GA4: ${sikker(analytik.ga4Fejl)}`
+    : ga4?.fejl ? `GA4 svarede: ${sikker(ga4.fejl)}`
+    : !harGa4 ? "Ingen GA4-data." : "";
+
+  // Tal i hovedet: besøgende og ændring mod de 30 dage før.
+  let metrik;
+  if (harGa4){
+    const delta = ga4.forrigeBesoegende ? (ga4.besoegende - ga4.forrigeBesoegende) / ga4.forrigeBesoegende : null;
+    metrik = `<span class="chart-value">${tal(ga4.besoegende)}</span>
+      ${delta == null ? "" : `<span class="chart-delta chart-delta--${delta >= 0 ? "up" : "down"}"
+        title="Mod de 30 dage før: ${tal(ga4.forrigeBesoegende)}">${delta >= 0 ? "▲" : "▼"} ${Math.abs(Math.round(delta * 100))}%</span>`}
+      <span class="chart-caption">besøgende · sidste 30 dage</span>`;
+  } else if (henter && site.ga4PropertyId){
+    metrik = `<span class="chart-value skel">000</span><span class="chart-caption">besøgende · sidste 30 dage</span>`;
+  } else {
+    metrik = `<span class="chart-value">–</span>
+      <span class="chart-caption">${site.ga4PropertyId ? "besøgende · sidste 30 dage" : "GA4 ikke konfigureret"}</span>`;
+  }
+
+  // Grafen. Uden data står gitterlinjerne alene med en besked over.
+  let plot = "", slutPrik = "", xakse = "<span></span><span></span><span>I dag</span>";
+  const gid = "g-" + site.slug.replace(/[^a-z0-9-]/gi, "");
+  if (harGa4){
+    const dage = ga4.dage;
+    const sti = grafSti(dage.map(d => d.sessions));
+    plot = `<path class="chart-area" d="${sti.flade}" fill="url(#${gid})"/>
+      <path class="chart-line" d="${sti.linje}"/>`;
+    const midt = dage[Math.floor((dage.length - 1) / 2)];
+    xakse = `<span>${kort(dage[0].dato)}</span><span>${kort(midt.dato)}</span><span>I dag</span>`;
+    slutPrik = `<span class="chart-end-dot" style="--end-y: ${(sti.slutY / 140 * 100).toFixed(2)}%;"></span>`;
+  }
+
+  const events = harGa4 ? ga4.events : null;
+  const kontakter = harGa4 ? kontakterFra(events, site.keyEvents) : null;
+  const substat = (label, indhold, tekst = false) => `<div class="substat">
+    <div class="substat-label">${label}</div>
+    <div class="${tekst ? "substat-text" : "substat-value"}${henter && site.ga4PropertyId ? " skel" : ""}">${indhold}</div></div>`;
+
+  boks.innerHTML = `
+    <header class="chart-head">
+      <div>
+        <div class="chart-title">
+          <span class="chart-dot"></span>
+          <h2>${sikker(site.navn)}</h2>
+          <span class="tag">${sikker(site.tag)}</span>
+        </div>
+        <div class="chart-metric">${metrik}</div>
+      </div>
+      <div class="segmented" role="group" aria-label="Periode">
+        <button type="button" class="is-active">30d</button>
+        <button type="button" aria-disabled="true" title="Kommer med fanen Websites">90d</button>
+        <button type="button" aria-disabled="true" title="Kommer med fanen Websites">År</button>
+      </div>
+    </header>
+
+    <div class="chart-plot${harGa4 ? "" : " chart-plot--tom"}" data-slug="${sikker(site.slug)}">
+      <svg viewBox="0 0 600 140" preserveAspectRatio="none" role="img" aria-label="Sessions per dag, sidste 30 dage">
+        <defs>
+          <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line class="grid-line" x1="0" y1="10" x2="600" y2="10"/>
+        <line class="grid-line" x1="0" y1="70" x2="600" y2="70"/>
+        <line class="grid-line" x1="0" y1="130" x2="600" y2="130"/>
+        ${plot}
+      </svg>
+      ${slutPrik}
+      ${ga4Besked ? `<div class="chart-tom">${ga4Besked}</div>` : ""}
+    </div>
+    <div class="chart-xaxis">${xakse}</div>
+
+    <footer class="chart-substats">
+      ${substat("Kontakter", kontakter == null ? "–" : tal(kontakter))}
+      ${substat("Topside", harGa4 && ga4.topside ? sikker(ga4.topside) : "–", true)}
+      ${substat("Topkilde", harGa4 && ga4.topkilde ? sikker(ga4.topkilde) : "–", true)}
+    </footer>
+
+    ${gscBlok(site, gsc, henter)}`;
+
+  if (harGa4) grafHover(boks.querySelector(".chart-plot"), ga4.dage);
+  // Kontakter-tallet forklarer sig selv på hover: hvilke events det er.
+  const k = boks.querySelector(".substat");
+  if (k) k.title = site.keyEvents.length ? "Key events: " + site.keyEvents.join(", ") : "Ingen key events i SITES";
+}
+
+function gscBlok(site, gsc, henter){
+  if (!site.gscProperty) return "";
+  if (henter) return `<div class="gsc">${skelet(2)}</div>`;
+  if (analytik.gscFejl) return `<div class="gsc"><p class="fejltekst">Search Console: ${sikker(analytik.gscFejl)}</p></div>`;
+  if (!gsc) return `<div class="gsc"><p class="muted">Ingen Search Console-data.</p></div>`;
+  if (gsc.fejl) return `<div class="gsc"><p class="fejltekst">Search Console svarede: ${sikker(gsc.fejl)}</p></div>`;
+
+  const top = (gsc.top || [])[0];
+  const pos = p => p == null ? "–" : decimal(p);
+  return `<div class="gsc">
+    <div class="gsc-head">
+      <span>Search Console · 28 dage til ${kort(gsc.til)}</span>
+      <span>${tal(gsc.klik)} klik · ${tal(gsc.visninger)} visninger</span>
+    </div>
+    ${top ? `<p class="gsc-note">Top søgeord: <b>${sikker(top.soegeord)}</b>: ${tal(top.klik)} klik, pos ${pos(top.position)}</p>`
+          : `<p class="gsc-note">Ingen søgeord med klik i perioden.</p>`}
+    ${(gsc.sporede || []).length ? `<table class="gsc-tabel">
+      <tr><th>Sporede søgeord</th><th>Klik</th><th>Position</th></tr>
+      ${gsc.sporede.map(q => `<tr>
+        <td>${sikker(q.soegeord)}</td>
+        <td class="tal">${tal(q.klik)}</td>
+        <td class="tal">${pos(q.position)}</td>
+      </tr>`).join("")}
+    </table>` : ""}
+  </div>`;
+}
+
+// Viser dag og antal sessions når musen er over grafen.
+function grafHover(plot, dage){
+  if (!plot) return;
+  const streg = document.createElement("div");
+  const tip = document.createElement("div");
+  streg.className = "chart-hover"; tip.className = "chart-tip";
+  streg.hidden = tip.hidden = true;
+  plot.append(streg, tip);
+  plot.onmousemove = e => {
+    const r = plot.getBoundingClientRect();
+    const i = Math.max(0, Math.min(dage.length - 1, Math.round((e.clientX - r.left) / r.width * (dage.length - 1))));
+    const x = dage.length === 1 ? r.width : i / (dage.length - 1) * r.width;
+    streg.style.left = tip.style.left = x + "px";
+    tip.textContent = `${kort(dage[i].dato)} · ${tal(dage[i].sessions)} sessions`;
+    streg.hidden = tip.hidden = false;
+  };
+  plot.onmouseleave = () => { streg.hidden = tip.hidden = true; };
+}
+</script>
+</body>
+</html>
