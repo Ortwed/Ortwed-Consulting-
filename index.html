@@ -176,7 +176,7 @@ input:focus, select:focus, textarea:focus {
 }
 .user-name { font-size: 13px; font-weight: 500; }
 .user-org { font-size: 11px; color: var(--text-dim); }
-.user .link { margin-left: auto; color: var(--text-dim); font-size: 11px; }
+.user .link { color: var(--text-dim); font-size: 11px; }
 .user .link:hover { color: var(--text); }
 
 .main { flex: 1; min-width: 0; padding: 36px 44px 56px; }
@@ -448,6 +448,80 @@ button.task-check:hover { border-color: var(--accent); background: var(--accent-
 .side-head h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
 .side-head p { color: var(--text-dim); margin-top: 4px; }
 
+.side-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.side-head .muted { margin-top: 4px; }
+
+/* ---------- Emner: kunder, sager, kontakter, møder i lister ---------- */
+.emne {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.emne.klik { cursor: pointer; }
+.emne.klik:hover { border-color: var(--accent-ring); }
+.emne-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.emne-titel { font-weight: 500; }
+.emne-under { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.emne-vaerdi { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.emne-fod { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 10px; font-size: 12px; color: var(--text-dim); }
+.emne p { margin-top: 10px; font-size: 13px; color: var(--text-muted); white-space: pre-wrap; }
+.panel-krop .emne { background: var(--card-soft); }
+
+.soeg { margin-bottom: 16px; }
+
+/* Pipeline: ét kort per trin, bjælken er værdi i forhold til største trin. */
+.trin { margin-bottom: 14px; }
+.trin-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.trin-head h2 { font-size: 15px; font-weight: 600; }
+.trin-sum { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bjaelke { height: 4px; background: var(--card-alt); border-radius: 2px; margin-bottom: 14px; overflow: hidden; }
+.bjaelke i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
+.trin .emne { background: var(--card-soft); }
+
+/* Afsnit i panelet. */
+.afsnit { margin-top: 26px; }
+.afsnit h4 {
+  font-size: 11px; font-weight: 500; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: .04em;
+  margin-bottom: 10px;
+}
+.afsnit .btn-sekundaer, .panel-krop > .btn-sekundaer { width: 100%; margin-top: 8px; }
+.btn-fare { background: var(--card); color: var(--danger); border: 1px solid #FECACA; border-radius: var(--radius-md); padding: 8px 14px; font-size: 13px; font-weight: 500; width: 100%; }
+.btn-fare:hover { background: var(--danger-soft); }
+.log { padding: 9px 0; border-top: 1px solid var(--line-soft); font-size: 13px; }
+.log .muted { font-size: 12px; margin-top: 2px; }
+.hjaelp { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+.tjek { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); margin-top: 16px; }
+.tjek input { width: auto; }
+
+/* Måned- og dagsoverskrifter i lister. */
+.overskrift {
+  font-size: 12px; font-weight: 600; color: var(--text-dim);
+  margin: 22px 0 8px;
+}
+/* Kun første bogstav. capitalize ville give "Torsdag 19. November". */
+.overskrift::first-letter { text-transform: uppercase; }
+.overskrift:first-child { margin-top: 0; }
+
+.fdag-raekke {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line-soft);
+  cursor: pointer;
+}
+.fdag-raekke:hover .fdag-navn { color: var(--accent); }
+.fdag-dato { width: 32px; font-size: 18px; font-weight: 600; text-align: center; flex-shrink: 0; }
+.fdag-raekke.idag .fdag-dato { color: var(--accent); }
+.fdag-tekst { flex: 1; min-width: 0; }
+.fdag-om { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+
+.stats--tre { grid-template-columns: repeat(3, 1fr); }
+.lyd { display: block; }
+
 /* ---------- Slide-in panel ---------- */
 #slor {
   position: fixed; inset: 0;
@@ -553,7 +627,10 @@ button.task-check:hover { border-color: var(--accent); background: var(--accent-
         <div class="user-name">Christian</div>
         <div class="user-org">Concept X</div>
       </div>
-      <button type="button" class="link" id="log-ud">Log ud</button>
+      <div style="margin-left:auto;text-align:right">
+        <button type="button" class="link lyd" id="lyd" title="Hilsen ved login">Lyd til</button>
+        <button type="button" class="link" id="log-ud">Log ud</button>
+      </div>
     </div>
   </aside>
 
@@ -629,6 +706,43 @@ const lokalDato = (d = new Date()) => {
   return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
 };
 
+const kr = n => n == null || n === "" ? "" : new Intl.NumberFormat("da-DK",
+  {style: "currency", currency: "DKK", maximumFractionDigits: 0}).format(n);
+const dato = d => d ? new Date(d).toLocaleDateString("da-DK", {day: "numeric", month: "short", year: "numeric"}) : "";
+const dagNavn = d => new Date(d).toLocaleDateString("da-DK", {weekday: "long", day: "numeric", month: "long"});
+const webUrl = w => /^https?:\/\//i.test(w) ? sikker(w) : "https://" + sikker(w);
+const ansatAf = k => (k.ansaettelser || []).find(a => a.nuvaerende);
+// Til <input type="datetime-local">, der vil have lokal tid uden tidszone.
+const lokalInput = d => {
+  const x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset());
+  return x.toISOString().slice(0, 16);
+};
+// Fejl fra et felt i panelet vises i panelets egen fejlboks.
+const panelFejl = (id, tekst) => { $(id).innerHTML = `<div class="fejl">${sikker(tekst)}</div>`; };
+
+const TRIN = [
+  ["ny", "Ny"],
+  ["kvalificeret", "Kvalificeret"],
+  ["besigtigelse", "Besigtigelse"],
+  ["tilbud_sendt", "Tilbud sendt"],
+  ["forhandling", "Forhandling"]
+];
+const ALLE_TRIN = [...TRIN, ["vundet", "Vundet"], ["tabt", "Tabt"]];
+const trinNavn = k => (ALLE_TRIN.find(t => t[0] === k) || [k, k])[1];
+const tilbudNavn = k => ({kladde: "Kladde", sendt: "Sendt", accepteret: "Accepteret", afvist: "Afvist"})[k] || trinNavn(k);
+
+const AKTIVITET = [
+  ["opkald", "Opkald"], ["mail", "Mail"], ["moede", "Møde"],
+  ["besigtigelse", "Besigtigelse"], ["note", "Note"]
+];
+const aktNavn = k => (AKTIVITET.find(a => a[0] === k) || [k, k])[1];
+
+// "Mine egne" afgøres af slug, så navnet frit kan ændres.
+let virksomheder = [];
+let egneNavne = new Set();
+const erEgen = navn => egneNavne.has(navn);
+const virksomhedPill = v => v ? `<span class="pill${erEgen(v) ? "" : " pill--graa"}">${sikker(v)}</span>` : "";
+
 const DAGE = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
 const MAANEDER = ["januar","februar","marts","april","maj","juni","juli",
                   "august","september","oktober","november","december"];
@@ -668,6 +782,7 @@ $("#login-form").onsubmit = async e => {
   knap.disabled = true;
   knap.textContent = "Logger ind…";
   $("#login-fejl").innerHTML = "";
+  hilsVedLogin = true;   // klikket her er det der giver browseren lov til at tale
   const { error } = await db.auth.signInWithPassword({
     email: $("#mail").value.trim(),
     password: $("#kode").value
@@ -676,6 +791,7 @@ $("#login-form").onsubmit = async e => {
     $("#login-fejl").innerHTML = `<div class="fejl">${sikker(error.message)}</div>`;
     knap.disabled = false;
     knap.textContent = "Log ind";
+    hilsVedLogin = false;
   }
 };
 $("#log-ud").onclick = () => db.auth.signOut();
@@ -695,10 +811,15 @@ db.auth.onAuthStateChange((_, session) => {
   }
 });
 
-function start(){
+async function start(){
   startet = true;
   $("#login").hidden = true;
   $("#app").hidden = false;
+  const { data } = await db.from("virksomheder").select("*");
+  egneNavne = new Set((data || []).filter(v => v.slug === "web").map(v => v.navn));
+  // Mine egne øverst, resten alfabetisk.
+  virksomheder = (data || []).sort((a, b) =>
+    (erEgen(b.navn) - erEgen(a.navn)) || a.navn.localeCompare(b.navn, "da"));
   // Fanen står i adressen, så en genindlæsning bliver på samme fane.
   const fane = location.hash.slice(1);
   visFane(FANER[fane] ? fane : "forside");
@@ -707,18 +828,16 @@ function start(){
 
 /* ============================================================
    4. FANER
-   Fase 1 har kun forsiden. De andre faner står som pladsholdere,
-   så navigationen er på plads og kan bygges ud én ad gangen.
    ============================================================ */
 const FANER = {
   forside:      () => visForside(),
-  pipeline:     () => visPladsholder("Pipeline", "Åbne sager grupperet per trin."),
-  kunder:       () => visPladsholder("Kunder", "Kartoteket over virksomheder."),
-  kontakter:    () => visPladsholder("Kontakter", "Netværket. Personer, ikke virksomheder."),
-  foedselsdage: () => visPladsholder("Fødselsdage", "Alle fødselsdage, grupperet efter måned."),
-  kalender:     () => visPladsholder("Kalender", "CRM-møder og Google-kalenderen flettet."),
-  opfoelgning:  () => visPladsholder("Opfølgning", "Opgaver og tilbud der er gået i stå."),
-  websites:     () => visPladsholder("Websites", "ortwed.dk og rosendal-tomrer.dk over 30 dage, 90 dage og et år.")
+  pipeline:     () => visPipeline(),
+  kunder:       () => visKunder(),
+  kontakter:    () => visKontakter(),
+  foedselsdage: () => visFoedselsdage(),
+  kalender:     () => visKalender(),
+  opfoelgning:  () => visOpfoelgning(),
+  websites:     () => visWebsites()
 };
 
 document.querySelectorAll(".nav-item").forEach(b => {
@@ -734,10 +853,16 @@ function visFane(navn){
   FANER[navn]();
 }
 
-function visPladsholder(titel, tekst){
-  $("#indhold").innerHTML = `
-    <header class="side-head"><h1>${sikker(titel)}</h1><p>${sikker(tekst)}</p></header>
-    <section class="card"><p class="tom">Fanen er ikke bygget endnu. Den kommer i fase 2.</p></section>`;
+// Overskrift på en fane med valgfri knap til højre.
+function sideHoved(titel, under, knap = ""){
+  return `<header class="side-head">
+    <div><h1>${titel}</h1>${under ? `<p class="muted">${under}</p>` : ""}</div>
+    ${knap}
+  </header>`;
+}
+function henter(){ $("#indhold").innerHTML = `<section class="card">${skelet(4)}</section>`; }
+function visFejl(e){
+  $("#indhold").innerHTML = `<section class="card"><p class="fejltekst">Kunne ikke hente data: ${sikker(e.message)}</p></section>`;
 }
 
 /* ============================================================
@@ -809,6 +934,7 @@ async function gemNyOpgave(){
   lukPanel();
   taelOpfoelgning();
   if (location.hash === "#forside") visForside();
+  if (location.hash === "#opfoelgning") visOpfoelgning();
 }
 
 async function lukOpgave(id){
@@ -817,6 +943,7 @@ async function lukOpgave(id){
     .eq("id", id);
   if (error) return alert("Kunne ikke lukke opgaven: " + error.message);
   taelOpfoelgning();
+  if (location.hash === "#opfoelgning") return visOpfoelgning();
   // Kun kortet tegnes om, ikke hele forsiden, så graferne ikke blinker.
   crmOpgaver = crmOpgaver.filter(t => t.id !== id);
   forsideTal.opgaverCrm = crmOpgaver.length;
@@ -841,6 +968,11 @@ async function taelOpfoelgning(){
    kilde sit eget kort ud når den svarer. Ingen kilde venter på en
    anden, og en kilde der fejler, tager ikke resten med sig.
    ============================================================ */
+
+// Hilsen ved login (afsnit 15). Står her, fordi login kan nå at ske
+// før scriptet er læst helt til bunden.
+let hilsVedLogin = false;
+let forsideHilsen = { moeder: 0, handling: 0, foedselar: [] };
 
 // Tallene i stats-rækken. null betyder "ikke hentet endnu".
 let forsideTal = {};
@@ -1005,6 +1137,16 @@ async function hentCrm(){
   tegnUge();
   tegnHandling();
   tegnFoedselsdage(fdag.data || [], fdag.error);
+
+  forsideHilsen = {
+    moeder: ugeMoeder.filter(m => lokalDato(m.start_tid) === idag).length,
+    handling: crmOpgaver.length + crmGaaet.length,
+    foedselar: (fdag.data || []).filter(f => f.dage_til === 0).map(f => f.navn.split(" ")[0])
+  };
+  if (hilsVedLogin){
+    hilsVedLogin = false;
+    hils(forsideHilsen);
+  }
 }
 
 // Næste møde i ugen, uanset om det står i CRM eller Google.
@@ -1095,8 +1237,7 @@ function tegnHandling(){
       <button type="button" class="task-check" title="Markér som færdig" aria-label="Markér som færdig" onclick="lukOpgave('${sikker(x.id)}')"></button>${krop}</li>`;
     if (x.slags === "todoist") return `<li><a class="task" href="${sikker(x.link)}" target="_blank" rel="noopener">
       <span class="task-check task-check--ikon" aria-hidden="true"></span>${krop}</a></li>`;
-    // Tilbud åbnes fra Opfølgning, indtil sagspanelet er bygget i fase 2.
-    return `<li><a class="task" href="#opfoelgning" onclick="visFane('opfoelgning');return false">
+    return `<li><a class="task" href="#" onclick="aabnLead('${sikker(x.id)}');return false">
       <span class="task-check task-check--ikon" aria-hidden="true"></span>${krop}</a></li>`;
   };
 
@@ -1135,7 +1276,7 @@ function tegnFoedselsdage(liste, fejl){
   if (!boks) return;
   if (fejl) return (boks.innerHTML = `<p class="fejltekst">Kunne ikke hente fødselsdage.</p>`);
   if (!liste.length) return (boks.innerHTML = `<p class="muted">Ingen fødselsdage de næste 30 dage.</p>`);
-  boks.innerHTML = `<ul class="list">${liste.slice(0, 5).map(f => `<li>
+  boks.innerHTML = `<ul class="list">${liste.slice(0, 5).map(f => `<li class="fdag-klik" style="cursor:pointer" onclick="${f.privat ? "retFoedselsdag" : "aabnPerson"}('${sikker(f.id)}')">
     <div class="list-titel">
       <div>${sikker(f.navn)}${f.fylder ? `, fylder ${sikker(f.fylder)}` : ""}</div>
       <div class="muted small">${[f.relation, f.virksomhed, f.privat ? "privat" : ""].filter(Boolean).map(sikker).join(" · ")}</div>
@@ -1371,8 +1512,8 @@ function tegnSite(site){
       </div>
       <div class="segmented" role="group" aria-label="Periode">
         <button type="button" class="is-active">30d</button>
-        <button type="button" aria-disabled="true" title="Kommer med fanen Websites">90d</button>
-        <button type="button" aria-disabled="true" title="Kommer med fanen Websites">År</button>
+        <button type="button" aria-disabled="true" title="Kræver længere perioder fra Apps Scriptet">90d</button>
+        <button type="button" aria-disabled="true" title="Kræver længere perioder fra Apps Scriptet">År</button>
       </div>
     </header>
 
@@ -1452,6 +1593,1120 @@ function grafHover(plot, dage){
     streg.hidden = tip.hidden = false;
   };
   plot.onmouseleave = () => { streg.hidden = tip.hidden = true; };
+}
+
+/* ============================================================
+   8. PIPELINE
+   ============================================================ */
+async function visPipeline(){
+  henter();
+  const { data, error } = await db.from("v_pipeline")
+    .select("*").order("forventet_lukkedato", {nullsFirst: false});
+  if (error) return visFejl(error);
+
+  const leads = data || [];
+  const vaerdi = liste => liste.reduce((s, l) => s + Number(l.estimeret_vaerdi || 0), 0);
+  const stoerste = Math.max(1, ...TRIN.map(([k]) => vaerdi(leads.filter(l => l.status === k))));
+
+  let h = sideHoved("Pipeline",
+    leads.length ? `${leads.length} åbne ${leads.length === 1 ? "sag" : "sager"} · ${kr(vaerdi(leads)) || "0 kr."}` : "",
+    `<button type="button" class="btn-primary" onclick="nyKunde()">+ Ny kunde</button>`);
+
+  if (!leads.length){
+    h += `<section class="card"><p class="tom">Ingen åbne sager. Opret en kunde, og hæng den første sag på.</p></section>`;
+    return ($("#indhold").innerHTML = h);
+  }
+
+  for (const [koden, navn] of TRIN){
+    const i = leads.filter(l => l.status === koden);
+    if (!i.length) continue;
+    const sum = vaerdi(i);
+    h += `<section class="card trin">
+      <div class="trin-head">
+        <h2>${navn}</h2>
+        <span class="pill pill--graa">${i.length}</span>
+        <span class="trin-sum">${kr(sum) || "0 kr."}</span>
+      </div>
+      <div class="bjaelke"><i style="width:${Math.max(sum ? 2 : 0, Math.round(sum / stoerste * 100))}%"></i></div>
+      ${i.map(leadKort).join("")}
+    </section>`;
+  }
+  $("#indhold").innerHTML = h;
+}
+
+function leadKort(l){
+  const forsinket = l.forventet_lukkedato && l.forventet_lukkedato < lokalDato();
+  return `<article class="emne klik" onclick="aabnLead('${sikker(l.id)}')">
+    <div class="emne-top">
+      <div>
+        <div class="emne-titel">${sikker(l.titel)}</div>
+        <div class="emne-under">${sikker(l.kunde)}${l.by ? ", " + sikker(l.by) : ""}</div>
+      </div>
+      <div class="emne-vaerdi">${kr(l.estimeret_vaerdi)}</div>
+    </div>
+    <div class="emne-fod">
+      ${virksomhedPill(l.virksomhed)}
+      ${l.forventet_lukkedato
+        ? `<span class="${forsinket ? "pill pill--sent" : ""}">Forventet ${kort(l.forventet_lukkedato)}</span>` : ""}
+      <span>${l.senest_aktivitet ? `Sidst rørt ${kort(l.senest_aktivitet)}` : "Aldrig rørt"}</span>
+    </div>
+  </article>`;
+}
+
+/* ============================================================
+   9. KUNDER
+   ============================================================ */
+async function visKunder(soeg = ""){
+  if (!soeg) henter();
+  let q = db.from("kunder")
+    .select("*, virksomheder(navn), ansaettelser(titel,nuvaerende,personer(navn)), leads(id,status)")
+    .order("navn");
+  // Kommaer og parenteser ville bryde Supabases or-filter, så de fjernes.
+  const s = soeg.replace(/[,()]/g, " ").trim();
+  if (s) q = q.or(`navn.ilike.%${s}%,by.ilike.%${s}%,email.ilike.%${s}%`);
+  const { data, error } = await q;
+  if (error) return visFejl(error);
+
+  let h = sideHoved("Kunder", `${data.length} ${data.length === 1 ? "kunde" : "kunder"}`,
+    `<button type="button" class="btn-primary" onclick="nyKunde()">+ Ny kunde</button>`) +
+    `<input id="soeg" class="soeg" placeholder="Søg på navn, by eller mail" value="${sikker(soeg)}">`;
+
+  h += data.length ? data.map(k => {
+    const aabne = (k.leads || []).filter(l => !["vundet", "tabt"].includes(l.status)).length;
+    return `<article class="emne klik" onclick="aabnKunde('${sikker(k.id)}')">
+      <div class="emne-top">
+        <div>
+          <div class="emne-titel">${sikker(k.navn)}</div>
+          <div class="emne-under">${[k.branche, ansatAf(k)?.personer?.navn].filter(Boolean).map(sikker).join(" · ")}</div>
+        </div>
+        ${virksomhedPill(k.virksomheder?.navn)}
+      </div>
+      ${aabne ? `<div class="emne-fod"><span>${aabne} åben ${aabne === 1 ? "sag" : "sager"}</span></div>` : ""}
+    </article>`;
+  }).join("")
+  : `<section class="card"><p class="tom">${soeg ? "Ingen kunder matcher søgningen." : "Ingen kunder endnu. Opret den første."}</p></section>`;
+
+  $("#indhold").innerHTML = h;
+  soegefelt("#soeg", visKunder);
+}
+
+// Søgning med en lille pause, så der ikke hentes for hvert tastetryk.
+// Fanen tegnes forfra, så markøren sættes tilbage i feltet bagefter.
+function soegefelt(id, vis){
+  const felt = $(id);
+  let timer;
+  felt.oninput = () => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const v = felt.value;
+      await vis(v);
+      const nyt = $(id);
+      nyt.focus();
+      nyt.setSelectionRange(v.length, v.length);
+    }, 300);
+  };
+}
+
+/* ---------- ny kunde ---------- */
+function nyKunde(){
+  aabnPanel("Opret", "Ny kunde", "", `
+    <label for="k-virk">Hører til</label>
+    <select id="k-virk">${virksomheder.map(v =>
+      `<option value="${sikker(v.id)}">${sikker(v.navn)}</option>`).join("")}</select>
+    <label for="k-navn">Virksomhedsnavn</label>
+    <input id="k-navn" placeholder="Firmanavn A/S">
+    <div class="par">
+      <div><label for="k-web">Website</label><input id="k-web" placeholder="firma.dk"></div>
+      <div><label for="k-cvr">CVR-nummer</label><input id="k-cvr" inputmode="numeric"></div>
+    </div>
+    <label for="k-branche">Branche</label>
+    <input id="k-branche" placeholder="Detail, SaaS, bureau…">
+    <label for="k-adr">Adresse</label>
+    <input id="k-adr">
+    <div class="par">
+      <div><label for="k-post">Postnr.</label><input id="k-post"></div>
+      <div><label for="k-by">By</label><input id="k-by"></div>
+    </div>
+
+    <div class="afsnit"><h4>Kontaktperson</h4>
+      <div class="par">
+        <div><label for="k-kp">Navn</label><input id="k-kp"></div>
+        <div><label for="k-titel">Titel</label><input id="k-titel" placeholder="Marketingchef"></div>
+      </div>
+      <div class="par">
+        <div><label for="k-tlf">Telefon</label><input id="k-tlf" inputmode="tel"></div>
+        <div><label for="k-mail">E-mail</label><input id="k-mail" type="email"></div>
+      </div>
+    </div>
+
+    <label for="k-kilde">Hvor kommer kunden fra?</label>
+    <input id="k-kilde" placeholder="Anbefaling, LinkedIn, netværk…">
+    <label for="k-noter">Noter</label>
+    <textarea id="k-noter"></textarea>
+    <div id="k-fejl"></div>
+    <button type="button" class="btn-primary" onclick="gemKunde()">Gem kunde</button>`);
+  $("#k-navn").focus();
+}
+
+async function gemKunde(){
+  const navn = $("#k-navn").value.trim();
+  if (!navn) return panelFejl("#k-fejl", "Kunden skal have et navn.");
+  const felt = id => $(id).value.trim() || null;
+  const { data: ny, error } = await db.from("kunder").insert({
+    virksomhed_id: $("#k-virk").value,
+    navn,
+    type: "erhverv",
+    website: felt("#k-web"),
+    cvr: felt("#k-cvr"),
+    branche: felt("#k-branche"),
+    adresse: felt("#k-adr"),
+    postnr: felt("#k-post"),
+    by: felt("#k-by"),
+    kilde: felt("#k-kilde"),
+    noter: felt("#k-noter")
+  }).select("id").single();
+  if (error) return panelFejl("#k-fejl", error.message);
+
+  // Personen oprettes for sig og kobles på med en ansættelse,
+  // så hun overlever et jobskifte.
+  const kp = $("#k-kp").value.trim();
+  if (kp && ny){
+    const { data: person } = await db.from("personer")
+      .insert({navn: kp, mobil: felt("#k-tlf")})
+      .select("id").single();
+    if (person) await db.from("ansaettelser").insert({
+      person_id: person.id,
+      kunde_id: ny.id,
+      titel: felt("#k-titel"),
+      email_arbejde: felt("#k-mail"),
+      telefon_arbejde: felt("#k-tlf"),
+      nuvaerende: true
+    });
+  }
+  lukPanel();
+  visFane("kunder");
+}
+
+/* ---------- kunde ---------- */
+async function aabnKunde(id){
+  const { data: k } = await db.from("kunder")
+    .select("*, virksomheder(navn), ansaettelser(*, personer(*)), leads(*)").eq("id", id).single();
+  if (!k) return;
+
+  const aabne = (k.leads || []).filter(l => !["vundet", "tabt"].includes(l.status));
+  const lukkede = (k.leads || []).filter(l => ["vundet", "tabt"].includes(l.status));
+  const adr = [k.adresse, [k.postnr, k.by].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  const ans = k.ansaettelser || [];
+  const nuvaerende = ans.filter(a => a.nuvaerende);
+  const tidligere = ans.filter(a => !a.nuvaerende);
+
+  aabnPanel("Kunde", sikker(k.navn), sikker(adr), `
+    <div class="emne">
+      ${k.website ? `<div><a href="${webUrl(k.website)}" target="_blank" rel="noopener">${sikker(k.website)}</a></div>` : ""}
+      ${k.cvr ? `<div class="muted">CVR ${sikker(k.cvr)}</div>` : ""}
+      <div class="emne-fod">
+        ${virksomhedPill(k.virksomheder?.navn)}
+        ${k.branche ? `<span>${sikker(k.branche)}</span>` : ""}
+        ${k.kilde ? `<span>Via ${sikker(k.kilde)}</span>` : ""}
+      </div>
+      ${k.noter ? `<p>${sikker(k.noter)}</p>` : ""}
+    </div>
+
+    <div class="afsnit">
+      <h4>Kontaktpersoner</h4>
+      ${nuvaerende.length ? nuvaerende.map(a => `<div class="emne klik" onclick="aabnPerson('${sikker(a.person_id)}')">
+        <div class="emne-titel">${sikker(a.personer?.navn || "")}</div>
+        ${a.titel ? `<div class="emne-under">${sikker(a.titel)}</div>` : ""}
+      </div>`).join("") : `<p class="tom">Ingen kontaktperson endnu.</p>`}
+      <button type="button" class="btn-sekundaer" onclick="nyPerson('${sikker(k.id)}')">Tilføj kontaktperson</button>
+      ${tidligere.length ? `<p class="hjaelp">Tidligere her: ${tidligere.map(a => sikker(a.personer?.navn || "")).join(", ")}</p>` : ""}
+    </div>
+
+    <div class="afsnit">
+      <h4>Sager</h4>
+      ${[...aabne, ...lukkede].map(kundeLead).join("") || `<p class="tom">Ingen sager endnu.</p>`}
+      <button type="button" class="btn-sekundaer" onclick="nytLead('${sikker(k.id)}')">Ny sag</button>
+    </div>
+
+    <div class="afsnit">
+      <button type="button" class="btn-fare" onclick="sletKunde('${sikker(k.id)}')">Slet kunden</button>
+    </div>`);
+}
+
+function kundeLead(l){
+  const pill = l.status === "tabt" ? "pill pill--sent" : l.status === "vundet" ? "pill" : "pill pill--graa";
+  return `<article class="emne klik" onclick="aabnLead('${sikker(l.id)}')">
+    <div class="emne-top">
+      <div>
+        <div class="emne-titel">${sikker(l.titel)}</div>
+        <div class="emne-fod" style="margin-top:6px"><span class="${pill}">${trinNavn(l.status)}</span></div>
+      </div>
+      <div class="emne-vaerdi">${kr(l.estimeret_vaerdi)}</div>
+    </div>
+  </article>`;
+}
+
+async function sletKunde(id){
+  if (!confirm("Slet kunden? Alle sager, tilbud og noter på kunden slettes med. Kontaktpersoner bliver stående i netværket.")) return;
+  const { error } = await db.from("kunder").delete().eq("id", id);
+  if (error) return alert("Kunne ikke slette: " + error.message);
+  lukPanel();
+  visFane("kunder");
+}
+
+/* ---------- ny sag ---------- */
+function nytLead(kundeId){
+  aabnPanel("Opret", "Ny sag", "", `
+    <label for="l-titel">Hvad handler den om?</label>
+    <input id="l-titel" placeholder="Website + SEO, 12 sider">
+    <label for="l-besk">Beskrivelse</label>
+    <textarea id="l-besk"></textarea>
+    <div class="par">
+      <div><label for="l-vaerdi">Estimeret værdi</label><input id="l-vaerdi" type="number" inputmode="numeric"></div>
+      <div><label for="l-dato">Forventet lukket</label><input id="l-dato" type="date"></div>
+    </div>
+    <label for="l-status">Status</label>
+    <select id="l-status">${TRIN.map(([k, n]) => `<option value="${k}">${n}</option>`).join("")}</select>
+    <div id="l-fejl"></div>
+    <button type="button" class="btn-primary" onclick="gemLead('${sikker(kundeId)}')">Gem sag</button>`);
+  $("#l-titel").focus();
+}
+
+async function gemLead(kundeId){
+  const titel = $("#l-titel").value.trim();
+  if (!titel) return panelFejl("#l-fejl", "Sagen skal have en titel.");
+  const { data: bruger } = await db.auth.getUser();
+  const { error } = await db.from("leads").insert({
+    kunde_id: kundeId,
+    titel,
+    beskrivelse: $("#l-besk").value.trim() || null,
+    estimeret_vaerdi: $("#l-vaerdi").value || null,
+    forventet_lukkedato: $("#l-dato").value || null,
+    status: $("#l-status").value,
+    ejer_id: bruger?.user?.id || null
+  });
+  if (error) return panelFejl("#l-fejl", error.message);
+  lukPanel();
+  visFane("pipeline");
+}
+
+/* ---------- sag ---------- */
+async function aabnLead(id){
+  const [{data: l}, {data: akt}, {data: tb}] = await Promise.all([
+    db.from("leads").select("*, kunder(id,navn,by,telefon)").eq("id", id).single(),
+    db.from("aktiviteter").select("*").eq("lead_id", id).order("sket_dato", {ascending: false}),
+    db.from("tilbud").select("*").eq("lead_id", id).order("sendt_dato", {ascending: false, nullsFirst: false})
+  ]);
+  if (!l) return;
+  const kundeId = l.kunder?.id || "";
+  const lid = sikker(l.id);
+
+  aabnPanel("Sag", sikker(l.titel),
+    kundeId ? `<a href="#" onclick="aabnKunde('${sikker(kundeId)}');return false">${sikker(l.kunder?.navn || "")}</a>` : "", `
+    <div class="emne">
+      <div class="emne-top">
+        <div>
+          <div class="emne-under">Estimeret værdi</div>
+          <div class="emne-vaerdi" style="font-size:20px">${kr(l.estimeret_vaerdi) || "Ikke sat"}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="emne-under">Forventet lukket</div>
+          <div class="emne-titel">${dato(l.forventet_lukkedato) || "Ikke sat"}</div>
+        </div>
+      </div>
+      ${l.beskrivelse ? `<p>${sikker(l.beskrivelse)}</p>` : ""}
+    </div>
+
+    <div class="afsnit">
+      <h4>Status</h4>
+      <select onchange="skiftStatus('${lid}', this.value)">
+        ${ALLE_TRIN.map(([k, n]) => `<option value="${k}"${k === l.status ? " selected" : ""}>${n}</option>`).join("")}
+      </select>
+    </div>
+
+    <div class="afsnit">
+      <h4>Tilbud</h4>
+      ${(tb || []).map(t => `<div class="emne">
+        <div class="emne-top">
+          <div>
+            <div class="emne-vaerdi">${kr(t.belob)}</div>
+            <div class="emne-under">${t.sendt_dato ? "Sendt " + dato(t.sendt_dato) : "Kladde"}</div>
+          </div>
+          <span class="pill${t.status === "afvist" ? " pill--sent" : t.status === "accepteret" ? "" : " pill--graa"}">${sikker(tilbudNavn(t.status))}</span>
+        </div>
+      </div>`).join("") || `<p class="tom">Intet tilbud sendt endnu.</p>`}
+      <div class="par">
+        <div><label for="t-belob">Beløb</label><input id="t-belob" type="number" inputmode="numeric"></div>
+        <div><label for="t-dato">Sendt</label><input id="t-dato" type="date" value="${lokalDato()}"></div>
+      </div>
+      <button type="button" class="btn-sekundaer" onclick="gemTilbud('${lid}')">Registrér tilbud</button>
+    </div>
+
+    <div class="afsnit">
+      <h4>Næste skridt</h4>
+      <div class="par">
+        <div><label for="o-titel">Opgave</label><input id="o-titel" placeholder="Ring og følg op"></div>
+        <div><label for="o-dato">Forfalder</label><input id="o-dato" type="date"></div>
+      </div>
+      <button type="button" class="btn-sekundaer" onclick="gemOpgave('${lid}','${sikker(kundeId)}')">Tilføj opgave</button>
+    </div>
+
+    <div class="afsnit">
+      <h4>Log</h4>
+      <div class="par">
+        <div><label for="a-type">Hvad skete der?</label>
+          <select id="a-type">${AKTIVITET.map(([k, n]) => `<option value="${k}">${n}</option>`).join("")}</select></div>
+        <div><label for="a-tekst">Kort beskrivelse</label><input id="a-tekst"></div>
+      </div>
+      <button type="button" class="btn-sekundaer" onclick="gemAktivitet('${lid}','${sikker(kundeId)}')" style="margin-bottom:12px">Log det</button>
+      ${(akt || []).map(a => `<div class="log">
+        <div>${sikker(a.beskrivelse)}</div>
+        <div class="muted">${aktNavn(a.type)} · ${dato(a.sket_dato)}</div>
+      </div>`).join("") || `<p class="tom">Intet logget endnu.</p>`}
+    </div>
+
+    <div class="afsnit">
+      <button type="button" class="btn-fare" onclick="sletLead('${lid}')">Slet sagen</button>
+    </div>`);
+}
+
+async function sletLead(id){
+  if (!confirm("Slet sagen? Tilbud, opgaver og log på den forsvinder også. Kunden bliver stående.")) return;
+  const { error } = await db.from("leads").delete().eq("id", id);
+  if (error) return alert("Kunne ikke slette: " + error.message);
+  lukPanel();
+  visFane("pipeline");
+}
+
+async function skiftStatus(id, status){
+  const { error } = await db.from("leads").update({status}).eq("id", id);
+  if (error) return alert("Kunne ikke skifte status: " + error.message);
+  visFane("pipeline");
+}
+
+async function gemTilbud(leadId){
+  const belob = $("#t-belob").value;
+  if (!belob) return;
+  await db.from("tilbud").insert({
+    lead_id: leadId,
+    belob,
+    sendt_dato: $("#t-dato").value || null,
+    status: $("#t-dato").value ? "sendt" : "kladde"
+  });
+  // Et sendt tilbud flytter sagen frem i pipelinen af sig selv.
+  await db.from("leads").update({status: "tilbud_sendt"}).eq("id", leadId);
+  aabnLead(leadId);
+}
+
+async function gemOpgave(leadId, kundeId){
+  const titel = $("#o-titel").value.trim();
+  const d = $("#o-dato").value;
+  if (!titel || !d) return;
+  const { data: bruger } = await db.auth.getUser();
+  await db.from("opgaver").insert({
+    lead_id: leadId,
+    kunde_id: kundeId || null,
+    titel,
+    forfalder_dato: d,
+    ansvarlig_id: bruger?.user?.id || null
+  });
+  aabnLead(leadId);
+  taelOpfoelgning();
+}
+
+async function gemAktivitet(leadId, kundeId){
+  const tekst = $("#a-tekst").value.trim();
+  // aktiviteter kræver en kunde i databasen.
+  if (!tekst || !kundeId) return;
+  const { data: bruger } = await db.auth.getUser();
+  await db.from("aktiviteter").insert({
+    kunde_id: kundeId,
+    lead_id: leadId,
+    type: $("#a-type").value,
+    beskrivelse: tekst,
+    bruger_id: bruger?.user?.id || null
+  });
+  aabnLead(leadId);
+}
+
+/* ============================================================
+   10. OPFØLGNING
+   Opgaverne hentes én gang og filtreres i browseren, så et klik
+   på Alle / I dag / Forfaldne ikke koster et netværkskald.
+   ============================================================ */
+let opgaveCache = [];
+let opgaveFilter = "alle";
+
+async function visOpfoelgning(){
+  henter();
+  const [gaaet, opgaver] = await Promise.all([
+    db.from("v_skal_foelges_op").select("*"),
+    db.from("opgaver").select("*, kunder(navn), leads(titel)")
+      .eq("afsluttet", false).order("forfalder_dato")
+  ]);
+  if (gaaet.error) return visFejl(gaaet.error);
+  if (opgaver.error) return visFejl(opgaver.error);
+
+  opgaveCache = opgaver.data || [];
+  const g = gaaet.data || [];
+  const forfaldne = opgaveCache.filter(t => t.forfalder_dato < lokalDato()).length;
+  const stat = (label, vaerdi, fremhaev) => `<article class="stat">
+    <div class="stat-label">${label}</div>
+    <div class="stat-row"><div class="stat-value${fremhaev ? " stat-value--accent" : ""}">${vaerdi}</div></div>
+    ${fremhaev ? `<span class="stat-marker" aria-hidden="true"></span>` : ""}
+  </article>`;
+
+  $("#indhold").innerHTML = sideHoved("Opfølgning", "Hvad der venter.",
+    `<button type="button" class="btn-primary" onclick="nyOpgave()">+ Ny opgave</button>`) + `
+    <section class="stats stats--tre">
+      ${stat("Åbne opgaver", opgaveCache.length)}
+      ${stat("Forfaldne", forfaldne, forfaldne > 0)}
+      ${stat("Tilbud i stå", g.length, g.length > 0)}
+    </section>
+    <div class="grid">
+      <section class="card">
+        <header class="card-head"><h2>Opgaver</h2><div class="segmented" id="opg-filter"></div></header>
+        <div id="opg-liste"></div>
+      </section>
+      <section class="card">
+        <header class="card-head"><h2>Tilbud der er gået i stå</h2></header>
+        <p class="hjaelp" style="margin:-8px 0 12px">Sendt for mere end 10 dage siden og ikke rørt i 7.</p>
+        ${g.length ? g.map(leadKort).join("") : `<p class="tom">Ingen tilbud ligger og samler støv.</p>`}
+      </section>
+    </div>`;
+
+  tegnOpgaver();
+  taelOpfoelgning();
+}
+
+function tegnOpgaver(){
+  const idag = lokalDato();
+  const filtre = {
+    alle:      ["Alle",      () => true],
+    idag:      ["I dag",     t => t.forfalder_dato === idag],
+    forfaldne: ["Forfaldne", t => t.forfalder_dato < idag]
+  };
+  $("#opg-filter").innerHTML = Object.entries(filtre).map(([k, [navn, f]]) =>
+    `<button type="button" class="${k === opgaveFilter ? "is-active" : ""}"
+      onclick="opgaveFilter='${k}';tegnOpgaver()">${navn} · ${opgaveCache.filter(f).length}</button>`).join("");
+
+  const vis = opgaveCache.filter(filtre[opgaveFilter][1]);
+  $("#opg-liste").innerHTML = vis.length ? `<ul class="tasks">${vis.map(t => `<li class="task">
+      <button type="button" class="task-check" title="Markér som færdig" aria-label="Markér som færdig" onclick="lukOpgave('${sikker(t.id)}')"></button>
+      <div class="task-body">
+        <div class="task-title">${sikker(t.titel)}</div>
+        <div class="task-meta">${sikker(t.kunder?.navn || t.leads?.titel || "")}</div>
+      </div>
+      <span class="pill${t.forfalder_dato < idag ? " pill--sent" : ""}">${kort(t.forfalder_dato)}</span>
+    </li>`).join("")}</ul>`
+    : `<p class="tom">${opgaveFilter === "alle" ? "Ingen opgaver på bordet." : "Intet i denne visning."}</p>`;
+}
+
+/* ============================================================
+   11. KONTAKTER  (personer, ikke kunder)
+   ============================================================ */
+async function visKontakter(soeg = ""){
+  if (!soeg) henter();
+  let q = db.from("v_kontakter").select("*").order("navn");
+  const s = soeg.replace(/[,()]/g, " ").trim();
+  if (s) q = q.or(`navn.ilike.%${s}%,virksomhed.ilike.%${s}%,titel.ilike.%${s}%`);
+  const { data, error } = await q;
+  if (error) return visFejl(error);
+
+  let h = sideHoved("Kontakter", `${data.length} i netværket`,
+    `<button type="button" class="btn-primary" onclick="nyPerson()">+ Ny kontakt</button>`) +
+    `<input id="soeg-k" class="soeg" placeholder="Søg på navn, virksomhed eller titel" value="${sikker(soeg)}">`;
+
+  h += data.length ? data.map(c => `<article class="emne klik" onclick="aabnPerson('${sikker(c.id)}')">
+      <div class="emne-top">
+        <div>
+          <div class="emne-titel">${sikker(c.navn)}</div>
+          <div class="emne-under">${[c.titel, c.virksomhed].filter(Boolean).map(sikker).join(" · ") || "Ingen aktuel arbejdsplads"}</div>
+        </div>
+        ${c.virksomhed ? (c.branche ? `<span class="pill pill--graa">${sikker(c.branche)}</span>` : "")
+          : `<span class="pill pill--sent">Mellem job</span>`}
+      </div>
+    </article>`).join("")
+    : `<section class="card"><p class="tom">${soeg ? "Ingen kontakter matcher." : "Ingen kontakter endnu."}</p></section>`;
+
+  $("#indhold").innerHTML = h;
+  soegefelt("#soeg-k", visKontakter);
+}
+
+/* ---------- ny kontakt ---------- */
+async function nyPerson(kundeId){
+  await hentKunder();
+  aabnPanel("Opret", "Ny kontakt", "", `
+    <label for="p-navn">Navn</label>
+    <input id="p-navn" placeholder="Fornavn Efternavn">
+    <div class="par">
+      <div><label for="p-mobil">Mobil</label><input id="p-mobil" inputmode="tel"></div>
+      <div><label for="p-mail">Privat e-mail</label><input id="p-mail" type="email"></div>
+    </div>
+    <label for="p-li">LinkedIn</label>
+    <input id="p-li" placeholder="linkedin.com/in/…">
+    ${personligeFelter({})}
+
+    <div class="afsnit"><h4>Arbejder hos</h4>
+      <label for="p-kunde">Virksomhed</label>
+      <select id="p-kunde">
+        <option value="">Ingen lige nu</option>
+        ${kundeListe.map(k => `<option value="${sikker(k.id)}"${k.id === kundeId ? " selected" : ""}>${sikker(k.navn)}</option>`).join("")}
+      </select>
+      <div class="par">
+        <div><label for="p-titel">Titel</label><input id="p-titel" placeholder="Marketingchef"></div>
+        <div><label for="p-fra">Startede</label><input id="p-fra" type="date"></div>
+      </div>
+      <div class="par">
+        <div><label for="p-atlf">Arbejdstelefon</label><input id="p-atlf"></div>
+        <div><label for="p-amail">Arbejdsmail</label><input id="p-amail" type="email"></div>
+      </div>
+    </div>
+
+    <label for="p-noter">Noter</label>
+    <textarea id="p-noter"></textarea>
+    <div id="p-fejl"></div>
+    <button type="button" class="btn-primary" onclick="gemPerson()">Gem kontakt</button>`);
+  $("#p-navn").focus();
+}
+
+async function gemPerson(){
+  const navn = $("#p-navn").value.trim();
+  if (!navn) return panelFejl("#p-fejl", "Kontakten skal have et navn.");
+  const felt = id => $(id).value.trim() || null;
+  const { data: person, error } = await db.from("personer").insert({
+    navn,
+    mobil: felt("#p-mobil"),
+    email: felt("#p-mail"),
+    linkedin: felt("#p-li"),
+    noter: felt("#p-noter"),
+    ...personligeVaerdier()
+  }).select("id").single();
+  if (error) return panelFejl("#p-fejl", error.message);
+
+  const kid = $("#p-kunde").value;
+  if (kid) await db.from("ansaettelser").insert({
+    person_id: person.id,
+    kunde_id: kid,
+    titel: felt("#p-titel"),
+    email_arbejde: felt("#p-amail"),
+    telefon_arbejde: felt("#p-atlf"),
+    fra_dato: $("#p-fra").value || null,
+    nuvaerende: true
+  });
+  lukPanel();
+  visFane("kontakter");
+}
+
+/* ---------- fødselsdag og relation ----------
+   Året 1900 betyder "året kendes ikke". En datoboks kan ikke tage
+   imod en dato uden år, og et falsk år er bedre end to felter. */
+const RELATIONER = ["kunde", "kollega", "ven", "familie", "netværk"];
+
+function fdagTekst(d){
+  const x = new Date(d);
+  return x.toLocaleDateString("da-DK", x.getFullYear() > 1900
+    ? {day: "numeric", month: "long", year: "numeric"} : {day: "numeric", month: "long"});
+}
+
+function personligeFelter(p){
+  return `<div class="par">
+      <div><label for="p-fdag">Fødselsdag</label>
+        <input id="p-fdag" type="date" value="${sikker(p.foedselsdag || "")}"></div>
+      <div><label for="p-rel">Relation</label>
+        <input id="p-rel" list="relationer" value="${sikker(p.relation || "")}" placeholder="kunde, ven, …">
+        <datalist id="relationer">${RELATIONER.map(r => `<option value="${r}">`).join("")}</datalist></div>
+    </div>
+    <p class="hjaelp">Kender du ikke året, så skriv 1900.</p>`;
+}
+
+function personligeVaerdier(){
+  return {
+    foedselsdag: $("#p-fdag").value || null,
+    relation: $("#p-rel").value.trim() || null
+  };
+}
+
+/* ---------- ret kontakt ---------- */
+async function retPerson(id){
+  const { data: p } = await db.from("personer").select("*").eq("id", id).single();
+  if (!p) return;
+  aabnPanel("Ret", sikker(p.navn), "", `
+    <label for="p-navn">Navn</label>
+    <input id="p-navn" value="${sikker(p.navn)}">
+    <div class="par">
+      <div><label for="p-mobil">Mobil</label><input id="p-mobil" inputmode="tel" value="${sikker(p.mobil || "")}"></div>
+      <div><label for="p-mail">Privat e-mail</label><input id="p-mail" type="email" value="${sikker(p.email || "")}"></div>
+    </div>
+    <label for="p-li">LinkedIn</label>
+    <input id="p-li" value="${sikker(p.linkedin || "")}">
+    ${personligeFelter(p)}
+    <label for="p-noter">Noter</label>
+    <textarea id="p-noter">${sikker(p.noter || "")}</textarea>
+    <div id="p-fejl"></div>
+    <button type="button" class="btn-primary" onclick="opdaterPerson('${sikker(p.id)}')">Gem ændringer</button>`);
+}
+
+async function opdaterPerson(id){
+  const navn = $("#p-navn").value.trim();
+  if (!navn) return panelFejl("#p-fejl", "Kontakten skal have et navn.");
+  const felt = s => $(s).value.trim() || null;
+  const { error } = await db.from("personer").update({
+    navn,
+    mobil: felt("#p-mobil"),
+    email: felt("#p-mail"),
+    linkedin: felt("#p-li"),
+    noter: felt("#p-noter"),
+    ...personligeVaerdier()
+  }).eq("id", id);
+  if (error) return panelFejl("#p-fejl", error.message);
+  aabnPerson(id);
+}
+
+/* ---------- kontaktkort ---------- */
+async function aabnPerson(id){
+  const [{data: p}, {data: m}] = await Promise.all([
+    db.from("personer").select("*, ansaettelser(*, kunder(id,navn))").eq("id", id).single(),
+    db.from("moeder").select("*").eq("person_id", id).order("start_tid", {ascending: false})
+  ]);
+  if (!p) return;
+
+  const ans = (p.ansaettelser || []).slice().sort((a, b) =>
+    (b.nuvaerende - a.nuvaerende) || String(b.fra_dato || "").localeCompare(String(a.fra_dato || "")));
+  const nu = ans.find(a => a.nuvaerende);
+  const foer = ans.filter(a => !a.nuvaerende);
+  const moeder = m || [];
+  const pid = sikker(p.id);
+
+  aabnPanel("Kontakt", sikker(p.navn),
+    nu ? sikker([nu.titel, nu.kunder?.navn].filter(Boolean).join(", ")) : "Mellem job", `
+    <div class="emne">
+      ${p.mobil ? `<div><a href="tel:${sikker(p.mobil)}">${sikker(p.mobil)}</a></div>` : ""}
+      ${nu?.email_arbejde ? `<div><a href="mailto:${sikker(nu.email_arbejde)}">${sikker(nu.email_arbejde)}</a></div>` : ""}
+      ${p.email ? `<div><a href="mailto:${sikker(p.email)}">${sikker(p.email)}</a> <span class="muted small">privat</span></div>` : ""}
+      ${p.linkedin ? `<div><a href="${webUrl(p.linkedin)}" target="_blank" rel="noopener">LinkedIn</a></div>` : ""}
+      ${p.foedselsdag ? `<div>Fødselsdag ${fdagTekst(p.foedselsdag)}</div>` : ""}
+      ${p.relation ? `<div class="emne-fod"><span class="pill pill--graa">${sikker(p.relation)}</span></div>` : ""}
+      ${p.noter ? `<p>${sikker(p.noter)}</p>` : ""}
+    </div>
+    <button type="button" class="btn-sekundaer" onclick="retPerson('${pid}')">Ret oplysninger</button>
+
+    <div class="afsnit">
+      <h4>Arbejdsplads</h4>
+      ${nu ? `<div class="emne klik" onclick="aabnKunde('${sikker(nu.kunder?.id)}')">
+          <div class="emne-titel">${sikker(nu.kunder?.navn || "")}</div>
+          <div class="emne-under">${sikker(nu.titel || "")}${nu.fra_dato ? " · siden " + dato(nu.fra_dato) : ""}</div>
+        </div>`
+        : `<p class="tom">Ingen aktuel arbejdsplads.</p>`}
+      <button type="button" class="btn-sekundaer" onclick="skiftJob('${pid}')">${nu ? "Registrér jobskifte" : "Tilføj arbejdsplads"}</button>
+      ${foer.length ? `<div style="margin-top:16px">${foer.map(a => `<div class="log">
+          <div>${sikker(a.kunder?.navn || "")}${a.titel ? ", " + sikker(a.titel) : ""}</div>
+          <div class="muted">${a.fra_dato ? dato(a.fra_dato) : "?"} til ${a.til_dato ? dato(a.til_dato) : "?"}</div>
+        </div>`).join("")}</div>` : ""}
+    </div>
+
+    <div class="afsnit">
+      <h4>Møder</h4>
+      ${moeder.length ? moeder.map(mm => `<div class="emne">
+        <div class="emne-top">
+          <div>
+            <div class="emne-titel">${sikker(mm.titel)}</div>
+            <div class="emne-under">${dagNavn(mm.start_tid)} kl. ${klokken(mm.start_tid)}</div>
+          </div>
+          <span class="pill${mm.afholdt ? " pill--graa" : ""}">${mm.afholdt ? "Afholdt" : "Planlagt"}</span>
+        </div>
+        ${mm.referat ? `<p>${sikker(mm.referat)}</p>` : ""}
+      </div>`).join("") : `<p class="tom">Ingen møder endnu.</p>`}
+      <button type="button" class="btn-sekundaer" onclick="nytMoede('${pid}')">Book møde</button>
+    </div>`);
+}
+
+/* ---------- jobskifte ---------- */
+async function skiftJob(personId){
+  await hentKunder();
+  aabnPanel("Jobskifte", "Ny arbejdsplads", "", `
+    <p class="hjaelp" style="margin-top:12px">Den nuværende ansættelse lukkes automatisk, og historikken bliver stående.</p>
+    <label for="j-kunde">Virksomhed</label>
+    <select id="j-kunde">${kundeListe.map(k => `<option value="${sikker(k.id)}">${sikker(k.navn)}</option>`).join("")}</select>
+    <div class="par">
+      <div><label for="j-titel">Titel</label><input id="j-titel"></div>
+      <div><label for="j-fra">Startede</label><input id="j-fra" type="date" value="${lokalDato()}"></div>
+    </div>
+    <div class="par">
+      <div><label for="j-tlf">Arbejdstelefon</label><input id="j-tlf"></div>
+      <div><label for="j-mail">Arbejdsmail</label><input id="j-mail" type="email"></div>
+    </div>
+    <div id="j-fejl"></div>
+    <button type="button" class="btn-primary" onclick="gemJob('${sikker(personId)}')">Gem jobskifte</button>`);
+}
+
+async function gemJob(personId){
+  const kid = $("#j-kunde").value;
+  if (!kid) return panelFejl("#j-fejl", "Vælg en virksomhed.");
+  const fra = $("#j-fra").value || lokalDato();
+
+  // Luk den gamle ansættelse frem for at overskrive den.
+  await db.from("ansaettelser")
+    .update({nuvaerende: false, til_dato: fra})
+    .eq("person_id", personId).eq("nuvaerende", true);
+
+  const { error } = await db.from("ansaettelser").insert({
+    person_id: personId,
+    kunde_id: kid,
+    titel: $("#j-titel").value.trim() || null,
+    telefon_arbejde: $("#j-tlf").value.trim() || null,
+    email_arbejde: $("#j-mail").value.trim() || null,
+    fra_dato: fra,
+    nuvaerende: true
+  });
+  if (error) return panelFejl("#j-fejl", error.message);
+  aabnPerson(personId);
+}
+
+/* ============================================================
+   12. FØDSELSDAGE
+   Familie og venner er personer med privat = true. De står her og
+   på forsiden, men ikke i Kontakter. Forretningskontakter får deres
+   fødselsdag på kontaktkortet og dukker også op her.
+   ============================================================ */
+async function visFoedselsdage(){
+  henter();
+  const { data, error } = await db.from("v_foedselsdage").select("*").order("dage_til");
+  if (error) return visFejl(error);
+  const alle = data || [];
+
+  let h = sideHoved("Fødselsdage", "Grupperet efter måned.",
+    `<button type="button" class="btn-primary" onclick="nyFoedselsdag()">+ Ny fødselsdag</button>`);
+
+  if (!alle.length){
+    h += `<section class="card"><p class="tom">Ingen fødselsdage endnu.</p></section>`;
+    return ($("#indhold").innerHTML = h);
+  }
+
+  // Grupperet efter måneden for næste fødselsdag, så listen læses som en kalender.
+  let sidste = "";
+  h += `<section class="card">`;
+  for (const f of alle){
+    const n = new Date(f.naeste);
+    const maaned = `${MAANEDER[n.getMonth()]} ${n.getFullYear()}`;
+    if (maaned !== sidste){
+      h += `<h4 class="overskrift">${maaned}</h4>`;
+      sidste = maaned;
+    }
+    h += `<div class="fdag-raekke${f.dage_til === 0 ? " idag" : ""}" onclick="${f.privat ? "retFoedselsdag" : "aabnPerson"}('${sikker(f.id)}')">
+      <div class="fdag-dato">${n.getDate()}</div>
+      <div class="fdag-tekst">
+        <div class="fdag-navn">${sikker(f.navn)}${f.fylder ? `, fylder ${sikker(f.fylder)}` : ""}</div>
+        <div class="muted small">${[f.relation, f.virksomhed, f.privat ? "privat" : ""].filter(Boolean).map(sikker).join(" · ")}</div>
+      </div>
+      <div class="fdag-om">${f.dage_til === 0 ? `<span class="pill">I dag</span>`
+        : f.dage_til === 1 ? "i morgen" : `om ${f.dage_til} dage`}</div>
+    </div>`;
+  }
+  h += `</section>`;
+  $("#indhold").innerHTML = h;
+}
+
+function foedselsdagFelter(p){
+  return `<label for="p-navn">Navn</label>
+    <input id="p-navn" value="${sikker(p.navn || "")}" placeholder="Fornavn Efternavn">
+    ${personligeFelter(p)}
+    <label for="p-noter">Noter</label>
+    <textarea id="p-noter" placeholder="Gaveidéer, hvad de kan lide…">${sikker(p.noter || "")}</textarea>
+    <label class="tjek"><input type="checkbox" id="p-forretning"${p.privat === false ? " checked" : ""}>
+      Vis også under Kontakter</label>
+    <div id="p-fejl"></div>`;
+}
+
+function nyFoedselsdag(){
+  aabnPanel("Opret", "Ny fødselsdag", "", `
+    ${foedselsdagFelter({ relation: "familie" })}
+    <button type="button" class="btn-primary" onclick="gemFoedselsdag()">Gem fødselsdag</button>`);
+  $("#p-navn").focus();
+}
+
+async function retFoedselsdag(id){
+  const { data: p } = await db.from("personer").select("*").eq("id", id).single();
+  if (!p) return;
+  aabnPanel("Fødselsdag", sikker(p.navn), p.foedselsdag ? fdagTekst(p.foedselsdag) : "", `
+    ${foedselsdagFelter(p)}
+    <button type="button" class="btn-primary" onclick="gemFoedselsdag('${sikker(p.id)}')">Gem ændringer</button>
+    <div class="afsnit">
+      <button type="button" class="btn-fare" onclick="sletFoedselsdag('${sikker(p.id)}')">Slet</button>
+    </div>`);
+}
+
+async function gemFoedselsdag(id){
+  const navn = $("#p-navn").value.trim();
+  const v = personligeVaerdier();
+  if (!navn || !v.foedselsdag) return panelFejl("#p-fejl", "Der skal både navn og fødselsdag på.");
+  const raekke = { navn, ...v, noter: $("#p-noter").value.trim() || null,
+                   privat: !$("#p-forretning").checked };
+  const { error } = id
+    ? await db.from("personer").update(raekke).eq("id", id)
+    : await db.from("personer").insert(raekke);
+  if (error) return panelFejl("#p-fejl", error.message);
+  lukPanel();
+  visFane(location.hash === "#forside" ? "forside" : "foedselsdage");
+}
+
+async function sletFoedselsdag(id){
+  if (!confirm("Slet personen helt? Det kan ikke fortrydes.")) return;
+  const { error } = await db.from("personer").delete().eq("id", id);
+  if (error) return panelFejl("#p-fejl", "Kunne ikke slette: " + error.message);
+  lukPanel();
+  visFane("foedselsdage");
+}
+
+/* ============================================================
+   13. KALENDER
+   Øverst denne uge med CRM og Google flettet (samme ugekort som på
+   forsiden), derunder alle kommende CRM-møder og de seneste afholdte.
+   ============================================================ */
+async function visKalender(){
+  henter();
+  const nuISO = new Date().toISOString();
+  const start = ugeStart();
+  const slut = new Date(start); slut.setDate(slut.getDate() + 7);
+  const [uge, kommende, afholdte] = await Promise.all([
+    db.from("moeder").select("*, personer(navn), kunder(navn)")
+      .gte("start_tid", start.toISOString()).lt("start_tid", slut.toISOString()).order("start_tid"),
+    db.from("moeder").select("*, personer(navn), kunder(navn)")
+      .gte("start_tid", nuISO).order("start_tid"),
+    db.from("moeder").select("*, personer(navn), kunder(navn)")
+      .lt("start_tid", nuISO).order("start_tid", {ascending: false}).limit(15)
+  ]);
+  if (kommende.error) return visFejl(kommende.error);
+
+  ugeMoeder = uge.data || [];
+  const k = kommende.data || [], a = afholdte.data || [];
+
+  let h = sideHoved("Kalender", `${k.length} ${k.length === 1 ? "møde" : "møder"} forude i CRM`,
+    `<button type="button" class="btn-primary" onclick="nytMoede()">+ Nyt møde</button>`) + `
+    <section class="card" style="margin-bottom:14px">
+      <header class="card-head"><h2>Uge ${ugeNr(new Date())}</h2><span class="muted small">CRM og Google-kalenderen</span></header>
+      <div class="week" id="uge"></div>
+    </section>
+    <div class="grid">
+      <section class="card"><header class="card-head"><h2>Kommende</h2></header>`;
+
+  if (!k.length){
+    h += `<p class="tom">Ingen møder i kalenderen.</p>`;
+  } else {
+    let sidsteDag = "";
+    for (const m of k){
+      const d = lokalDato(m.start_tid);
+      if (d !== sidsteDag){
+        h += `<h4 class="overskrift">${dagNavn(m.start_tid)}</h4>`;
+        sidsteDag = d;
+      }
+      h += moedeKort(m);
+    }
+  }
+  h += `</section>
+      <section class="card"><header class="card-head"><h2>Afholdt</h2></header>
+        ${a.length ? a.map(moedeKort).join("") : `<p class="tom">Intet afholdt endnu.</p>`}
+      </section>
+    </div>`;
+  $("#indhold").innerHTML = h;
+  tegnUge();
+
+  // Google-kalenderen kommer med indbakken. Er den ikke hentet endnu
+  // (fx ved genindlæsning direkte på fanen), hentes den her.
+  if (!gKalender.length){
+    try {
+      const r = await apiHent("/api/indbakke");
+      gKalender = (await r.json()).aftaler || [];
+      tegnUge();
+    } catch {}
+  }
+}
+
+function moedeKort(m){
+  const forbi = new Date(m.start_tid) < new Date();
+  return `<article class="emne">
+    <div class="emne-top">
+      <div>
+        <div class="emne-titel">${sikker(m.titel)}</div>
+        <div class="emne-under">${[m.personer?.navn, m.kunder?.navn].filter(Boolean).map(sikker).join(" · ")}</div>
+      </div>
+      <div class="emne-vaerdi">${klokken(m.start_tid)}</div>
+    </div>
+    <div class="emne-fod">
+      <span>${dagNavn(m.start_tid)}</span>
+      ${m.sted ? `<span>${sikker(m.sted)}</span>` : ""}
+      ${m.varighed_min ? `<span>${sikker(m.varighed_min)} min</span>` : ""}
+      ${m.afholdt ? `<span class="pill pill--graa">Afholdt</span>`
+        : forbi ? `<button type="button" class="btn-sekundaer" style="padding:4px 10px" onclick="afslutMoede('${sikker(m.id)}')">Registrér referat</button>` : ""}
+    </div>
+    ${m.referat ? `<p>${sikker(m.referat)}</p>` : ""}
+  </article>`;
+}
+
+async function nytMoede(personId){
+  const { data: folk } = await db.from("v_kontakter").select("id,navn,virksomhed,kunde_id").order("navn");
+  const start = new Date(); start.setHours(start.getHours() + 1, 0, 0, 0);
+  aabnPanel("Book", "Nyt møde", "", `
+    <label for="m-titel">Hvad handler mødet om?</label>
+    <input id="m-titel" placeholder="Statusmøde">
+    <label for="m-person">Med hvem?</label>
+    <select id="m-person">
+      <option value="">Ingen kontakt valgt</option>
+      ${(folk || []).map(f => `<option value="${sikker(f.id)}" data-kunde="${sikker(f.kunde_id || "")}"${f.id === personId ? " selected" : ""}>${sikker(f.navn)}${f.virksomhed ? ", " + sikker(f.virksomhed) : ""}</option>`).join("")}
+    </select>
+    <div class="par">
+      <div><label for="m-start">Hvornår</label><input id="m-start" type="datetime-local" value="${lokalInput(start)}"></div>
+      <div><label for="m-min">Varighed (min)</label><input id="m-min" type="number" value="60" inputmode="numeric"></div>
+    </div>
+    <label for="m-sted">Sted</label>
+    <input id="m-sted" placeholder="Teams, deres kontor, frokost…">
+    <div id="m-fejl"></div>
+    <button type="button" class="btn-primary" onclick="gemMoede()">Gem møde</button>`);
+  $("#m-titel").focus();
+}
+
+async function gemMoede(){
+  const titel = $("#m-titel").value.trim();
+  const start = $("#m-start").value;
+  if (!titel || !start) return panelFejl("#m-fejl", "Mødet skal have en titel og et tidspunkt.");
+  const valgt = $("#m-person").selectedOptions[0];
+  const { error } = await db.from("moeder").insert({
+    titel,
+    person_id: $("#m-person").value || null,
+    kunde_id: valgt?.dataset.kunde || null,
+    start_tid: new Date(start).toISOString(),
+    varighed_min: Number($("#m-min").value) || 60,
+    sted: $("#m-sted").value.trim() || null
+  });
+  if (error) return panelFejl("#m-fejl", error.message);
+  lukPanel();
+  visFane("kalender");
+}
+
+async function afslutMoede(id){
+  const { data: m } = await db.from("moeder").select("*").eq("id", id).single();
+  if (!m) return;
+  aabnPanel("Referat", sikker(m.titel), dagNavn(m.start_tid), `
+    <label for="r-tekst">Hvad kom der ud af det?</label>
+    <textarea id="r-tekst" style="min-height:150px">${sikker(m.referat || "")}</textarea>
+    <button type="button" class="btn-primary" onclick="gemReferat('${sikker(id)}')">Gem og markér afholdt</button>`);
+  $("#r-tekst").focus();
+}
+
+async function gemReferat(id){
+  await db.from("moeder")
+    .update({referat: $("#r-tekst").value.trim() || null, afholdt: true})
+    .eq("id", id);
+  lukPanel();
+  visFane("kalender");
+}
+
+/* ============================================================
+   14. WEBSITES
+   Samme kort som på forsiden. 90 dage og år kræver at Apps Scriptet
+   kan levere længere perioder, så de står som knapper uden funktion.
+   ============================================================ */
+function visWebsites(){
+  kilder = {};
+  $("#indhold").innerHTML = sideHoved("Websites", "Trafik fra GA4 og søgeord fra Search Console.") +
+    `<div class="col">${SITES.map(s => `<section class="card chart-card" id="site-${s.slug}" style="--chart-color: ${s.farve};"></section>`).join("")}</div>`;
+  if (analytik.hentet) SITES.forEach(tegnSite);
+  else hentAnalytik();
+}
+
+/* ============================================================
+   15. HILSEN VED LOGIN
+   Browserens egen stemme, så der hverken er nøgle eller server.
+   Browsere må kun tale efter et klik, derfor kun ved selve login
+   og ikke når en gemt session åbner siden. Én gang om dagen, så
+   den ikke bliver til støj. "Lyd til" i sidebaren siger den med
+   det samme, uden dagsgrænse.
+   localStorage er per browser og kan være låst, deraf try/catch.
+   ============================================================ */
+function lydErSlaaet(){
+  try { return localStorage.getItem("lyd") === "fra"; } catch { return false; }
+}
+function lydSlaaet(fra){
+  try { localStorage.setItem("lyd", fra ? "fra" : "til"); } catch {}
+  if (fra && window.speechSynthesis) speechSynthesis.cancel();
+}
+function visLydKnap(){
+  $("#lyd").textContent = lydErSlaaet() ? "Lyd fra" : "Lyd til";
+}
+$("#lyd").onclick = () => {
+  const varFra = lydErSlaaet();
+  lydSlaaet(!varFra);
+  visLydKnap();
+  if (varFra) hils(forsideHilsen, true);
+};
+visLydKnap();
+
+function hilsenTekst({ moeder, handling, foedselar }){
+  const tal = n => ["no","one","two","three","four","five","six","seven","eight","nine","ten"][n] ?? String(n);
+  const flertal = (n, ord) => `${tal(n)} ${ord}${n === 1 ? "" : "s"}`;
+  const t = new Date().getHours();
+  const dele = [t < 12 ? "Good morning, sir." : t < 18 ? "Good afternoon, sir." : "Good evening, sir."];
+
+  if (moeder || handling){
+    const s = [
+      moeder ? `${flertal(moeder, "meeting")} today` : "",
+      handling ? `${flertal(handling, "item")} requiring your attention` : ""
+    ].filter(Boolean).join(", and ");
+    dele.push(s[0].toUpperCase() + s.slice(1) + ".");
+  } else {
+    dele.push("Nothing on the calendar, and nothing overdue.");
+  }
+  if (foedselar.length === 1) dele.push(`It is ${foedselar[0]}'s birthday.`);
+  if (foedselar.length > 1) dele.push(`Birthdays today: ${foedselar.join(" and ")}.`);
+  return dele.join(" ");
+}
+
+// Stemmerne indlæses asynkront i nogle browsere, så vent kort på dem.
+function stemmer(){
+  const nu = speechSynthesis.getVoices();
+  if (nu.length) return Promise.resolve(nu);
+  return new Promise(ok => {
+    speechSynthesis.onvoiceschanged = () => ok(speechSynthesis.getVoices());
+    setTimeout(() => ok(speechSynthesis.getVoices()), 1000);
+  });
+}
+
+async function hils(tal, tving = false){
+  if (!window.speechSynthesis || lydErSlaaet()) return;
+  const idag = lokalDato();
+  try {
+    if (!tving && localStorage.getItem("hilst") === idag) return;
+    localStorage.setItem("hilst", idag);
+  } catch {}
+  // To klik lige efter hinanden skal ikke give to hilsner. Kun cancel
+  // når den taler, for Safari sluger en speak() lige efter en cancel().
+  if (speechSynthesis.speaking) speechSynthesis.cancel();
+
+  const stemme = britiskMand(await stemmer());
+  const s = new SpeechSynthesisUtterance(hilsenTekst(tal));
+  if (stemme) s.voice = stemme;
+  s.lang = "en-GB";
+  s.rate = 0.95;
+  s.pitch = 0.9;          // en anelse dybere, mere butler
+  speechSynthesis.speak(s);
+}
+
+/* Britisk mandestemme. Navnene varierer mellem browsere: Safari siger
+   "Daniel", Chrome "Google UK English Male", Edge "Microsoft Ryan Online".
+   Derfor matches der på dele af navnet, i prioriteret rækkefølge.
+   Første britiske stemme på listen er ofte en kvinde, så den bruges
+   kun hvis navnet ikke afslører køn, og aldrig hvis det siger Female. */
+const BRITISKE_MAEND = ["Daniel", "Google UK English Male", "Ryan", "Thomas",
+  "George", "Arthur", "Oliver", "Alfie", "Elliot", "Ethan", "Noah", "Malcolm"];
+const KVINDER = /female|kate|serena|stephanie|martha|libby|sonia|maisie|hazel|susan|mia|bella|abbi|hollie|olivia/i;
+
+function britiskMand(alle){
+  const gb = alle.filter(v => /^en[-_]GB/i.test(v.lang));
+  for (const navn of BRITISKE_MAEND){
+    const v = gb.find(v => v.name.includes(navn)) || alle.find(v => v.name.startsWith(navn + " ") || v.name === navn);
+    if (v) return v;
+  }
+  return gb.find(v => !KVINDER.test(v.name)) || null;
 }
 </script>
 </body>

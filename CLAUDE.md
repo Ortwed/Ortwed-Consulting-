@@ -8,9 +8,11 @@ af. Dashboardet samler kunder, leads, personer, møder, opgaver, mail,
 kalender, nyheder og performance-data for to websites han driver
 (ortwed.dk og rosendal-tomrer.dk).
 
-Det er en nybygning af `Ortwed/co-consulting-crm` i et nyt visuelt sprog.
-Det gamle repo og dets Cloudflare-projekt står urørt som backup og kører
-parallelt. Ændr ikke noget der.
+Appen bor i `Ortwed/co-consulting-crm` og deployer til det Cloudflare
+Pages-projekt der altid har kørt den. I november 2026 blev den bygget om
+fra et HUD-tema til det nuværende design (bygget i `Ortwed/Ortwed-Consulting-`
+og flyttet hertil, så secrets og Apps Script kunne genbruges).
+Det gamle HUD-design ligger urørt på branchen `hud-backup`.
 
 ## Hvad det er
 
@@ -58,8 +60,12 @@ analytics.gs  ?v=ga4       besøg og events per GA4-property
               ?v=gsc       klik, visninger, position per Search Console-site
 ```
 
-Uden `v` svarer scriptet som indbakke, fordi det gamle dashboard kalder
-uden. Det skal blive ved med at virke. `analytics.gs` kræver de to
+Uden `v` svarer scriptet som indbakke, fordi HUD-versionen kaldte uden.
+Det er ufarligt at beholde.
+
+Indtil `main.gs` og `analytics.gs` er pastet ind og deployet, svarer det
+kørende script med indbakken uanset `v`. Grafkortene opdager det og skriver
+at Apps Scriptet ikke kender `v=ga4/gsc` endnu. Resten af forsiden virker. `analytics.gs` kræver de to
 Advanced Services `AnalyticsData` og `SearchConsole` i scripteditoren.
 
 SQL-patches køres manuelt i Supabase SQL Editor og versioneres ikke.
@@ -67,7 +73,7 @@ SQL-patches køres manuelt i Supabase SQL Editor og versioneres ikke.
 ## Datamodellen
 
 Den vigtigste beslutning i hele projektet: **en person er ikke en kunde, og
-en sag er ikke en kunde.** Datamodellen deles med det gamle dashboard og
+en sag er ikke en kunde.** Datamodellen overlevede designskiftet urørt og
 ændres ikke uden at Christian beder om det.
 
 ```
@@ -176,7 +182,7 @@ for tre dage siden.
 Environment variables i Cloudflare, alle som type **Secret**:
 
 ```
-GMAIL_URL       Apps Script /exec-adresse (deles med det gamle projekt)
+GMAIL_URL       Apps Script /exec-adresse
 GMAIL_NOEGLE    delt nøgle, skal matche NOEGLE i Apps Script
 TODOIST_TOKEN   Todoist API token fra den PRIVATE konto, ikke arbejdskontoen
 ```
@@ -213,17 +219,27 @@ lærte det på den hårde måde).
 Omdøber man en secret i Cloudflare, forsvinder værdien. Slet den og
 opret den igen.
 
-## Faser
+## Faner
 
-1. **Fundament og forside** (bygget): login, sidebar, topbar, forsiden
-   med rigtige data, alle functions, Apps Script-kopien.
-2. **Resten af fanerne**, én ad gangen: Pipeline, Kunder, Opfølgning,
-   Kontakter, Fødselsdage, Kalender, Websites (90d og år). Portér
-   funktionaliteten fra det gamle repo (CRUD, slide-in panel, jobskifte,
-   v_skal_foelges_op) til det nye design. Indtil da står fanerne som
-   pladsholdere.
-3. **Polering**: dark mode, ordentlig mobil, hilsen med stemme ved login
-   (britisk mandestemme, én gang om dagen), alarm-tærskler for websites.
+Forside, Pipeline, Kunder, Kontakter, Fødselsdage, Kalender, Opfølgning
+(med prik for forfaldne opgaver) og Websites. Alt der oprettes eller
+rettes, sker i panelet der glider ind fra højre. Fødselsdage: private
+åbner deres eget panel, forretningskontakter åbner kontaktkortet.
+
+Hilsen ved login: browserens egen stemme, britisk mand, én gang om dagen.
+"Lyd til" i sidebaren siger den med det samme, uden dagsgrænse.
+
+## Hvad der mangler
+
+- **Websites 90 dage og år.** Knapperne står uden funktion. Kræver at
+  `analytics.gs` kan tage en periode med.
+- **Dark mode.** Duplikér `:root` som `[data-theme="dark"]`.
+- **Ordentlig mobil.** Under 720px er sidebaren en vandret række øverst.
+- **Alarm-tærskler for websites**, fx 0 kontakter i tre dage.
+- **Fødselsdagsmail** dagen før. Kræver en tidsstyret trigger i Apps
+  Script, der læser `v_foedselsdage` forbi RLS. Mindst dårlige vej:
+  scriptet logger ind med Christians email og password fra Script
+  Properties frem for en service role key. Tag beslutningen med ham først.
 
 ## Når du arbejder her
 
