@@ -675,7 +675,8 @@ const SITES = [
     farve: "#0EA5E9",
     ga4PropertyId: "559754036", // ligger på andet login, så det login skal dele den med Christians hovedkonto
     gscProperty: "sc-domain:rosendal-tomrer.dk",
-    keyEvents: [],
+    // generate_lead sendes af sitets egen kode, når kontaktformularen (Formspree) er sendt.
+    keyEvents: ["kontakt_opkald", "generate_lead"],
     trackedQueries: ["tømrer hundested", "træterrasse nordsjælland", "tagrenovering nordsjælland"]
   }
 ];
