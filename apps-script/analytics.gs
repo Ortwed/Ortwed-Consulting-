@@ -212,3 +212,20 @@ function soegeordRaekke(r) {
     position: r.position || null
   };
 }
+
+
+/* ============================================================
+   AFPRØVNING
+   Kør afproev() én gang fra editoren (vælg den i menuen øverst og
+   tryk Kør). Første gang beder Google om lov til at læse GA4 og
+   Search Console. Uden den godkendelse fejler dashboardet, fordi
+   web-appen ikke selv kan spørge om lov. Resultatet står i
+   Udførelseslog nederst.
+   ============================================================ */
+function afproev() {
+  Logger.log(JSON.stringify(ga4({ ider: "551899083" })).slice(0, 1500));
+  Logger.log(JSON.stringify(gsc({ soeg: JSON.stringify({
+    "sc-domain:ortwed.dk": ["brolægger hundested"],
+    "sc-domain:rosendal-tomrer.dk": ["tømrer hundested"]
+  }) })).slice(0, 1500));
+}
