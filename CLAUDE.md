@@ -70,6 +70,15 @@ Advanced Service `AnalyticsData`. Search Console findes ikke som Advanced
 Service og kaldes med UrlFetchApp, så `appsscript.json` skal have
 `oauthScopes` (listen står øverst i `analytics.gs`).
 
+Scriptet er koblet til et rigtigt Google Cloud-projekt (ikke Apps Scripts
+skjulte standardprojekt), fordi Search Console API skulle slås til der.
+Projektets OAuth consent screen står i **In production**, uverificeret.
+Det skal blive ved med det: i Testing udløber godkendelsen efter 7 dage,
+og så holder både post og grafer op med at virke. Fejler Apps Script-
+kaldene pludselig med en auth-fejl, så tjek publishing-status først, og
+kør derefter `afproev()` i editoren for at godkende igen. Projektnummeret
+står i Apps Script under tandhjulet (Project Settings).
+
 SQL-patches køres manuelt i Supabase SQL Editor og versioneres ikke.
 
 ## Datamodellen
