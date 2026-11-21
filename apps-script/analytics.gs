@@ -1,9 +1,20 @@
 /**
  * analytics.gs: GA4 og Search Console
  *
- * Kræver to Advanced Services i scripteditoren (Services → Add service):
+ * Kræver én Advanced Service i scripteditoren (Services → Add service):
  *   Google Analytics Data API    identifier: AnalyticsData
- *   Google Search Console API    identifier: SearchConsole
+ *
+ * Search Console findes ikke som Advanced Service. Den kaldes direkte
+ * med UrlFetchApp, og det kræver at rettigheden står i appsscript.json:
+ *   "oauthScopes": [
+ *     "https://mail.google.com/",
+ *     "https://www.googleapis.com/auth/calendar",
+ *     "https://www.googleapis.com/auth/analytics.readonly",
+ *     "https://www.googleapis.com/auth/webmasters.readonly",
+ *     "https://www.googleapis.com/auth/script.external_request"
+ *   ],
+ * Står der én rettighed i filen, skal de alle stå der, også Gmail og
+ * Calendar, ellers holder indbakken op med at virke.
  *
  * Scriptet kører som dig, så det kan kun se de GA4-properties og
  * Search Console-sites din Google-konto har adgang til. Ligger et site
@@ -197,11 +208,21 @@ function gscSite(site, sporede) {
 }
 
 function gscForesp(site, foresp) {
-  // Tjenesten hedder Searchanalytics i Apps Script, med lille a. Den
-  // anden stavemåde er med for en sikkerheds skyld.
-  const sa = SearchConsole.Searchanalytics || SearchConsole.SearchAnalytics;
-  const svar = sa.query(foresp, site);
-  return svar.rows || [];
+  const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/"
+    + encodeURIComponent(site) + "/searchAnalytics/query";
+  const r = UrlFetchApp.fetch(url, {
+    method: "post",
+    contentType: "application/json",
+    headers: { Authorization: "Bearer " + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify(foresp),
+    // Uden den kaster UrlFetchApp en fejl uden Googles forklaring.
+    muteHttpExceptions: true
+  });
+  const data = JSON.parse(r.getContentText() || "{}");
+  if (r.getResponseCode() !== 200) {
+    throw new Error((data.error && data.error.message) || ("Search Console svarede " + r.getResponseCode()));
+  }
+  return data.rows || [];
 }
 
 function soegeordRaekke(r) {

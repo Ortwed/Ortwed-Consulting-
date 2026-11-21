@@ -65,8 +65,10 @@ Det er ufarligt at beholde.
 
 Indtil `main.gs` og `analytics.gs` er pastet ind og deployet, svarer det
 kørende script med indbakken uanset `v`. Grafkortene opdager det og skriver
-at Apps Scriptet ikke kender `v=ga4/gsc` endnu. Resten af forsiden virker. `analytics.gs` kræver de to
-Advanced Services `AnalyticsData` og `SearchConsole` i scripteditoren.
+at Apps Scriptet ikke kender `v=ga4/gsc` endnu. Resten af forsiden virker. `analytics.gs` kræver
+Advanced Service `AnalyticsData`. Search Console findes ikke som Advanced
+Service og kaldes med UrlFetchApp, så `appsscript.json` skal have
+`oauthScopes` (listen står øverst i `analytics.gs`).
 
 SQL-patches køres manuelt i Supabase SQL Editor og versioneres ikke.
 
